@@ -59,7 +59,10 @@ let engine = {
         /* Update the logic!!!!!!!!!!!!!!!! */
         //red_square.update();
 
+        //game.tank.maxSpeed
+
         game.collision.check(1);
+
         //game.setFireLimit(200);
         //game.execAIroutine(500);
         accumulated_time -= interval_;

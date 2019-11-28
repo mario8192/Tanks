@@ -11,6 +11,7 @@ export default class AI {
     this.routines[0] = ["D", "1", "L", "1", "U", "R"];
     this.routines[1] = ["R", "1", "U", "D", "1", "L"];
     this.routines[2] = ["R", "1", "R", "L", "-", "1", "U"];
+    this.routines[3] = ["D", "1", "U", "1", "-", "-"];
     //this.routine(adt);
   }
 
@@ -30,6 +31,7 @@ export default class AI {
     this.tanks.push(new AITank(this.game, 600, 100));
     this.tanks.push(new AITank(this.game, 100, 400));
     this.tanks.push(new AITank(this.game, 200, 60));
+    this.tanks.push(new AITank(this.game, 650, 700));
     //console.log(this.tanks);
   }
 

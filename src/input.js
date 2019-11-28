@@ -1,24 +1,29 @@
 export default class InputHandler {
   constructor(tank, game) {
     document.addEventListener("keydown", event => {
+      //alert(event.keyCode);
       switch (event.keyCode) {
         case 65:
           if (game.gamestate === 0) return;
+          tank.stop();
           tank.moveLeft();
           break;
 
         case 87:
           if (game.gamestate === 0) return;
+          tank.stop();
           tank.moveUp();
           break;
 
         case 68:
           if (game.gamestate === 0) return;
+          tank.stop();
           tank.moveRight();
           break;
 
         case 83:
           if (game.gamestate === 0) return;
+          tank.stop();
           tank.moveDown();
           break;
 
@@ -34,29 +39,33 @@ export default class InputHandler {
         case 32:
           game.start();
           break;
+
+        case 48:
+          console.log(game.currentState());
+          break;
       }
     });
     document.addEventListener("keyup", event => {
       switch (event.keyCode) {
         case 65:
-          tank.stop();
+          tank.stopInX();
           break;
 
         case 87:
-          tank.stop();
+          tank.stopInY();
           break;
 
         case 68:
-          tank.stop();
+          tank.stopInX();
           break;
 
         case 83:
-          tank.stop();
+          tank.stopInY();
           break;
       }
     });
     window.addEventListener("blur", event => {
-      game.togglePause();
+      game.pauseOnDefocus();
     });
   }
 }

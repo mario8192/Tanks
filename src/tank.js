@@ -30,6 +30,10 @@ export default class Tank {
     this.noUpdate = 0;
   }
 
+  state() {
+    return [this.position.x, this.position.y];
+  }
+
   moveLeft() {
     if (!this.velY && this.velX !== 1) {
       this.velX = -1;
@@ -72,11 +76,21 @@ export default class Tank {
     this.velY = 0;
   }
 
+  stopInX() {
+    this.velX = 0;
+  }
+
+  stopInY() {
+    this.velY = 0;
+  }
+
   respawn() {
     this.fires.splice(0, this.fires.length);
 
     this.position.x = this.game.gameWidth / 2 - this.width / 2;
     this.position.y = this.game.gameHeight / 2 + 200;
+
+    this.axis = "-Y";
 
     setTimeout(console.log("respawned"), 500);
   }
@@ -127,8 +141,13 @@ export default class Tank {
     if (this.noUpdate) {
       this.noUpdate = 0;
     } else {
-      this.position.x += this.velX * this.maxSpeed;
-      this.position.y += this.velY * this.maxSpeed;
+      // this.position.x += this.velX * this.maxSpeed;
+      // this.position.y += this.velY * this.maxSpeed;
+
+      if (this.axis === "+X" || this.axis === "-X")
+        this.position.x += this.velX;
+      if (this.axis === "+Y" || this.axis === "-Y")
+        this.position.y += this.velY;
     }
   }
 

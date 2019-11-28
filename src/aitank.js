@@ -33,6 +33,10 @@ export default class AITank {
     this.noUpdate = 0;
   }
 
+  state() {
+    return [this.position.x, this.position.y];
+  }
+
   moveLeft() {
     // if (!this.velY && this.velX !== 1) {
     //   this.velX = -1;

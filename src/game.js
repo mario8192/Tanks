@@ -33,8 +33,21 @@ export default class Game {
     this.tank = new Tank(this);
 
     this.collision = new Collision(this);
+    // this.collisionTank = new Collision(this);
+    // this.collisionAI = new Collision(this);
 
     new InputHandler(this.tank, this);
+  }
+
+  currentState() {
+    let aiStates = [];
+    let i = 0;
+    this.ai.tanks.forEach(tank => {
+      aiStates[i] = tank.state();
+      i += 1;
+    });
+
+    return [this.tank.state(), ...aiStates];
   }
 
   start() {
@@ -47,6 +60,7 @@ export default class Game {
       return;
 
     this.lives = 3;
+    this.tank.respawn();
     this.terrain.clear();
     this.terrain.buildWalls();
     this.ai.clear();
@@ -151,6 +165,12 @@ export default class Game {
     if (this.gamestate == GAMESTATE.PAUSED) {
       this.gamestate = GAMESTATE.RUNNING;
     } else {
+      this.gamestate = GAMESTATE.PAUSED;
+    }
+  }
+
+  pauseOnDefocus() {
+    if (this.gamestate == GAMESTATE.RUNNING) {
       this.gamestate = GAMESTATE.PAUSED;
     }
   }

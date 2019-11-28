@@ -243,7 +243,8 @@ export default class Collision {
     this.ai.tanks.forEach(aitank => {
       aitank.fires.forEach(fire => {
         if (detectCollision(fire, this.tank)) {
-          console.log("life -1");
+          console.log("lives ", this.game.lives);
+          fire.lifeEnd();
           this.game.loseLife();
           this.tank.respawn();
         }

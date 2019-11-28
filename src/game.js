@@ -20,6 +20,7 @@ export default class Game {
     this.gamestate = GAMESTATE.MENU;
 
     this.lives = 3;
+    this.livesCounter = "Lives: 3";
     this.blockSize = 40;
 
     this.terrain = new Terrain(this);
@@ -113,6 +114,12 @@ export default class Game {
     this.tank.draw(ctx);
     this.terrain.draw(ctx);
     this.ai.draw(ctx);
+    this.livesCounter = "Lives: " + this.lives;
+
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText(this.livesCounter, this.gameWidth - 50, 30);
 
     if (this.gamestate === GAMESTATE.PAUSED) {
       ctx.rect(0, 0, this.gameWidth, this.gameHeight);

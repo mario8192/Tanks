@@ -1,4 +1,5 @@
 import AITank from "./aitank.js";
+import { step, setSteps, callStepFunction } from "./step.js";
 
 export default class AI {
   constructor(game) {
@@ -14,7 +15,7 @@ export default class AI {
       this.action = this.actions[Math.floor(Math.random() * 5)];
     else this.action = "pause";
     //console.log(this.action);
-    tank.step(this.action);
+    step(tank, this.action);
   }
 
   initializeRandomAI(adt) {
@@ -36,7 +37,7 @@ export default class AI {
   runSteps(adt) {
     let i = 0;
     this.tanks.forEach(tank => {
-      tank.setSteps(adt, this.steps[i]);
+      setSteps(tank, this.steps[i], adt);
       i += 1;
     });
   }

@@ -35,26 +35,6 @@ export default class Tank {
     this.noUpdate = 0;
   }
 
-  state() {
-    let x;
-    let y;
-
-    let xdiff = this.position.x % this.game.blockSize;
-    let ydiff = this.position.y % this.game.blockSize;
-
-    x =
-      xdiff < this.game.blockSize / 2
-        ? (x = this.position.x - xdiff)
-        : (x = this.position.x + this.game.blockSize - xdiff);
-
-    y =
-      ydiff < this.game.blockSize / 2
-        ? this.position.y - ydiff
-        : this.position.y + this.game.blockSize - ydiff;
-
-    return [x, y];
-  }
-
   moveLeft() {
     //if (!this.velY && this.velX !== 1) {
     this.velX = -1;

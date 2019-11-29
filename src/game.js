@@ -3,6 +3,7 @@ import Tank from "./tank.js";
 import Terrain from "./terrain.js";
 import AI from "./ai.js";
 import Collision from "./collision.js";
+import { state } from "./state.js";
 
 const GAMESTATE = {
   PAUSED: 0,
@@ -21,7 +22,7 @@ let gameScreenDrawn = {
 
 export default class Game {
   constructor(gameWidth, gameHeight, bricksPerRow) {
-    this.qtable = []
+    this.qtable = [];
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.gamestate = GAMESTATE.MENU;
@@ -48,24 +49,28 @@ export default class Game {
     new InputHandler(this.tank, this);
   }
 
-  fillQtable()  {
-    for(let i=0; i<this.blockSize; i++) {
-      for(let j=0; j<this.blockSize; j++) {
-        this.qtable.push([(this.gameHeight/16)*i,(this.gameWidth/20)*j,[Math.random(),Math.random(),Math.random(),Math.random()]])
+  fillQtable() {
+    for (let i = 0; i < this.blockSize; i++) {
+      for (let j = 0; j < this.blockSize; j++) {
+        this.qtable.push([
+          (this.gameHeight / 16) * i,
+          (this.gameWidth / 20) * j,
+          [Math.random(), Math.random(), Math.random(), Math.random()]
+        ]);
       }
     }
-    console.log(this.qtable)
+    console.log(this.qtable);
   }
 
   currentState() {
     let aiStates = [];
     let i = 0;
     this.ai.tanks.forEach(tank => {
-      aiStates[i] = tank.state();
+      aiStates[i] = state(tank);
       i += 1;
     });
 
-    return [this.tank.state(), ...aiStates];
+    return [state(this.tank), ...aiStates];
   }
 
   start() {

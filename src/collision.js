@@ -256,6 +256,24 @@ export default class Collision {
       });
     });
 
+    //aitank + aitank
+    this.ai.tanks.forEach(aitank => {
+      this.ai.tanks.forEach(aitank2 => {
+        if (aitank !== aitank2 && detectCollision(aitank, aitank2)) {
+          let axis = this.axisOfCollision(aitank, aitank2);
+          if (
+            (axis === "^" && aitank.axis === "-Y") ||
+            (axis === ">" && aitank.axis === "+X") ||
+            (axis === "v" && aitank.axis === "+Y") ||
+            (axis === "<" && aitank.axis === "-X")
+          ) {
+            aitank.noUpdate = 1;
+            aitank2.noUpdate = 1;
+          }
+        }
+      });
+    });
+
     // this.game.tank.updatePosition();
     // this.game.ai.tanks.forEach(aitank => aitank.updatePosition());
     //console.log(this.ai.tanks[2].noUpdate, this.ai.tanks[2].axis);

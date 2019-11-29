@@ -1,5 +1,6 @@
 import AITank from "./aitank.js";
 import { step, setSteps, callStepFunction } from "./step.js";
+import { initConsole } from "./customConsole.js";
 
 export default class AI {
   constructor(game) {
@@ -50,14 +51,19 @@ export default class AI {
     this.tanks.push(new AITank(this.game, 385, 30));
     this.tanks.push(new AITank(this.game, 100, 400));
     this.tanks.push(new AITank(this.game, 200, 60));
+    this.tanks.push(new AITank(this.game, 150, 400));
+    this.tanks.push(new AITank(this.game, 500, 550));
+    this.tanks.push(new AITank(this.game, 700, 500));
     //this.tanks.push(new AITank(this.game, 650, 700));
     //console.log(this.tanks);
+
+    initConsole(this);
   }
 
   removeEmpty() {
     this.tanks.forEach(tank => {
       if (tank.life === 0) {
-        this.tanks[this.tanks.indexOf(tank)].routine = [];
+        //this.tanks[this.tanks.indexOf(tank)].routine = [];
         this.tanks.splice(this.tanks.indexOf(tank), 1);
       }
     });

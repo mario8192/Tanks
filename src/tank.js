@@ -18,7 +18,7 @@ export default class Tank {
 
     this.defaultPosition = {
       x: game.gameWidth / 2 - this.width / 2,
-      y: game.gameHeight / 2 + 100
+      y: game.gameHeight / 2 + 50
     };
 
     this.position = {

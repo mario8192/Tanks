@@ -5,6 +5,20 @@ export default class AI {
     this.tanks = [];
     this.game = game;
     this.steps = [];
+    this.action = null;
+    this.actions = ["U", "D", "R", "L", "1"];
+  }
+
+  initializeAI() {
+    this.tanks.forEach(tank => {
+      setInterval(this.randomAction(tank), 200);
+    });
+  }
+
+  randomAction(tank) {
+    this.action = this.actions[Math.floor(Math.random() * 5)];
+    console.log(this.action);
+    tank.step(this.action);
   }
 
   buildSteps() {

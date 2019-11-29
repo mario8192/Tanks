@@ -204,7 +204,7 @@ export default class Game {
     this.livesCounter = "Lives: " + this.lives;
 
     ctx.font = "20px Arial";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.fillText(this.livesCounter, this.gameWidth - 50, 30);
   }

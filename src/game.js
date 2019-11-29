@@ -12,6 +12,12 @@ const GAMESTATE = {
   NEWLEVEL: 4,
   WIN: 5
 };
+let gameScreenDrawn = {
+  PAUSED: false,
+  MENU: false,
+  GAMEOVER: false,
+  WIN: false
+};
 
 export default class Game {
   constructor(gameWidth, gameHeight, bricksPerRow) {
@@ -89,28 +95,106 @@ export default class Game {
   }
 
   update(deltaTime) {
-    if (this.lives === 0) this.gamestate = GAMESTATE.GAMEOVER;
-
-    if (
-      this.gamestate === GAMESTATE.PAUSED ||
-      this.gamestate === GAMESTATE.MENU ||
-      this.gamestate === GAMESTATE.GAMEOVER ||
-      this.gamestate === GAMESTATE.WIN
-    )
+    if (this.lives === 0) {
+      this.gamestate = GAMESTATE.GAMEOVER;
       return;
+    }
 
-    //collision logic goes here
+    // if (
+    //   this.gamestate === GAMESTATE.PAUSED ||
+    //   this.gamestate === GAMESTATE.MENU ||
+    //   this.gamestate === GAMESTATE.GAMEOVER ||
+    //   this.gamestate === GAMESTATE.WIN
+    // )
+    //   return;
+    if (this.gamestate === GAMESTATE.RUNNING) {
+      //collision logic goes here
 
-    //this.collision.update(deltaTime);
-    this.tank.update(deltaTime);
+      //this.collision.update(deltaTime);
+      this.tank.update(deltaTime);
 
-    //console.log(this.ai.tanks[2].noUpdate, this.ai.tanks[2].axis);
-    this.ai.update(deltaTime);
+      //console.log(this.ai.tanks[2].noUpdate, this.ai.tanks[2].axis);
+      this.ai.update(deltaTime);
 
-    if (this.ai.tanks.length === 0) this.gamestate = GAMESTATE.WIN;
+      gameScreenDrawn = {
+        PAUSED: false,
+        MENU: false,
+        GAMEOVER: false,
+        WIN: false
+      };
+    } else return;
+
+    if (this.ai.tanks.length === 0) {
+      this.gamestate = GAMESTATE.WIN;
+      return;
+    }
   }
 
   draw(ctx) {
+    if (this.gamestate === GAMESTATE.PAUSED) {
+      if (!gameScreenDrawn.PAUSED) {
+        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.fillStyle = "rgba(0,0,0,0.5)";
+        ctx.fill();
+
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
+      }
+      gameScreenDrawn.PAUSED = true;
+      return;
+    }
+
+    if (this.gamestate === GAMESTATE.MENU) {
+      if (!gameScreenDrawn.MENU) {
+        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.fillStyle = "rgba(0,0,0,1)";
+        ctx.fill();
+
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          "Press SPACEBAR To Start",
+          this.gameWidth / 2,
+          this.gameHeight / 2
+        );
+      }
+      gameScreenDrawn.MENU = true;
+      return;
+    }
+    if (this.gamestate === GAMESTATE.GAMEOVER) {
+      if (!gameScreenDrawn.GAMEOVER) {
+        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.fillStyle = "rgba(0,0,0,1)";
+        ctx.fill();
+
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("GAME OVER", this.gameWidth / 2, this.gameHeight / 2);
+      }
+      gameScreenDrawn.GAMEOVER = true;
+      return;
+    }
+    if (this.gamestate === GAMESTATE.WIN) {
+      if (!gameScreenDrawn.WIN) {
+        ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+        ctx.fillStyle = "rgba(0,0,0,1)";
+        ctx.fill();
+
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText("YOU WIN", this.gameWidth / 2, this.gameHeight / 2);
+      }
+      gameScreenDrawn.WIN = true;
+      return;
+    }
+
+    ctx.clearRect(0, 0, this.gameWidth, this.gameHeight);
+
     this.tank.draw(ctx);
     this.terrain.draw(ctx);
     this.ai.draw(ctx);
@@ -120,52 +204,6 @@ export default class Game {
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
     ctx.fillText(this.livesCounter, this.gameWidth - 50, 30);
-
-    if (this.gamestate === GAMESTATE.PAUSED) {
-      ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-      ctx.fillStyle = "rgba(0,0,0,0.5)";
-      ctx.fill();
-
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
-    }
-
-    if (this.gamestate === GAMESTATE.MENU) {
-      ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-      ctx.fillStyle = "rgba(0,0,0,1)";
-      ctx.fill();
-
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.fillText(
-        "Press SPACEBAR To Start",
-        this.gameWidth / 2,
-        this.gameHeight / 2
-      );
-    }
-    if (this.gamestate === GAMESTATE.GAMEOVER) {
-      ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-      ctx.fillStyle = "rgba(0,0,0,1)";
-      ctx.fill();
-
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.fillText("GAME OVER", this.gameWidth / 2, this.gameHeight / 2);
-    }
-    if (this.gamestate === GAMESTATE.WIN) {
-      ctx.rect(0, 0, this.gameWidth, this.gameHeight);
-      ctx.fillStyle = "rgba(0,0,0,1)";
-      ctx.fill();
-
-      ctx.font = "30px Arial";
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.fillText("YOU WIN", this.gameWidth / 2, this.gameHeight / 2);
-    }
   }
 
   togglePause() {

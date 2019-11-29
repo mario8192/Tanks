@@ -16,6 +16,7 @@ let game = new Game(GAME_WIDTH, GAME_HEIGHT);
 // game.setFireLimit(200);
 
 let lastTime = 0;
+let requestID = null;
 
 let fpsmeter = new FPSMeter({
   decimals: 0,
@@ -118,7 +119,7 @@ function gameLoop(timestamp) {
   //let deltaTime = 1;
   lastTime = timestamp;
 
-  ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+  //ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
   game.update(deltaTime);
   game.draw(ctx);
@@ -126,6 +127,25 @@ function gameLoop(timestamp) {
   fpsmeter.tickStart();
   fpsmeter.tick();
   requestAnimationFrame(gameLoop);
+
+  // } else {
+  //   cancelAnimationFrame(requestID);
+
+  //   switch (game.gamestate) {
+  //     case 0:
+  //       game.pauseScreen();
+  //       break;
+  //     case 2:
+  //       game.menuScreen();
+  //       break;
+  //     case 3:
+  //       game.gameoverScreen();
+  //       break;
+  //     case 5:
+  //       game.winScreen();
+  //       break;
+  //   }
+  // }
 }
 
 engine.start(10);

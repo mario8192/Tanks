@@ -21,6 +21,7 @@ let gameScreenDrawn = {
 
 export default class Game {
   constructor(gameWidth, gameHeight, bricksPerRow) {
+    this.qtable = []
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.gamestate = GAMESTATE.MENU;
@@ -45,6 +46,15 @@ export default class Game {
     // this.collisionAI = new Collision(this);
 
     new InputHandler(this.tank, this);
+  }
+
+  fillQtable()  {
+    for(let i=0; i<this.blockSize; i++) {
+      for(let j=0; j<this.blockSize; j++) {
+        this.qtable.push([(this.gameHeight/16)*i,(this.gameWidth/20)*j,[Math.random(),Math.random(),Math.random(),Math.random()]])
+      }
+    }
+    console.log(this.qtable)
   }
 
   currentState() {

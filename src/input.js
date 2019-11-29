@@ -5,25 +5,25 @@ export default class InputHandler {
       switch (event.keyCode) {
         case 65:
           if (game.gamestate === 0) return;
-          tank.stop();
+          //tank.stop();
           tank.moveLeft();
           break;
 
         case 87:
           if (game.gamestate === 0) return;
-          tank.stop();
+          //tank.stop();
           tank.moveUp();
           break;
 
         case 68:
           if (game.gamestate === 0) return;
-          tank.stop();
+          //tank.stop();
           tank.moveRight();
           break;
 
         case 83:
           if (game.gamestate === 0) return;
-          tank.stop();
+          //tank.stop();
           tank.moveDown();
           break;
 

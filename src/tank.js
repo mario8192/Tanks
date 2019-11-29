@@ -16,9 +16,14 @@ export default class Tank {
 
     this.axis = "-Y";
 
-    this.position = {
+    this.defaultPosition = {
       x: game.gameWidth / 2 - this.width / 2,
-      y: game.gameHeight / 2 + 200
+      y: game.gameHeight / 2 + 100
+    };
+
+    this.position = {
+      x: 0,
+      y: 0
     };
 
     this.terrain = game.terrain;
@@ -35,31 +40,28 @@ export default class Tank {
   }
 
   moveLeft() {
-    if (!this.velY && this.velX !== 1) {
-      this.velX = -1;
-      this.axis = "-X";
-    }
+    //if (!this.velY && this.velX !== 1) {
+    this.velX = -1;
+    this.axis = "-X";
   }
 
   moveRight() {
-    if (!this.velY && this.velX !== -1) {
-      this.velX = 1;
-      this.axis = "+X";
-    }
+    //if (!this.velY && this.velX !== -1) {
+    this.velX = 1;
+    this.axis = "+X";
   }
 
   moveUp() {
-    if (!this.velX && this.velY !== 1) {
-      this.velY = -1;
-      this.axis = "-Y";
-    }
+    //if (!this.velX && this.velY !== 1) {
+    this.velY = -1;
+    this.axis = "-Y";
   }
 
   moveDown() {
-    if (!this.velX && this.velY !== -1) {
-      this.velY = 1;
-      this.axis = "+Y";
-    }
+    //if (!this.velX && this.velY !== -1) {
+    this.velY = 1;
+    this.axis = "+Y";
+    console.log("down");
   }
 
   fireCooldown() {
@@ -78,17 +80,21 @@ export default class Tank {
 
   stopInX() {
     this.velX = 0;
+    if (this.velY === 1) this.axis = "+Y";
+    if (this.velY === -1) this.axis = "-Y";
   }
 
   stopInY() {
     this.velY = 0;
+    if (this.velX === 1) this.axis = "+X";
+    if (this.velX === -1) this.axis = "-X";
   }
 
   respawn() {
     this.fires.splice(0, this.fires.length);
 
-    this.position.x = this.game.gameWidth / 2 - this.width / 2;
-    this.position.y = this.game.gameHeight / 2 + 200;
+    this.position.x = this.defaultPosition.x;
+    this.position.y = this.defaultPosition.y;
 
     this.axis = "-Y";
 

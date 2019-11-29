@@ -66,7 +66,10 @@ export default class Collision {
 
   check(deltaTime) {
     if (this.game.gamestate === 1) this.update(deltaTime);
-    else return;
+    else {
+      console.log("high cpu for some fukn reason");
+      return;
+    }
   }
 
   update(deltaTime) {

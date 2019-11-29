@@ -207,27 +207,30 @@ export default class AITank {
   } ////  ^--------- TO BE TREATED AS BLACK BOX
 
   step(action) {
-    if (action == "U") {
+    if (action === "paused") {
+      return;
+    }
+    if (action === "U") {
       this.moveUp();
       //console.log("U");
     }
-    if (action == "D") {
+    if (action === "D") {
       this.moveDown();
       //console.log("D");
     }
-    if (action == "L") {
+    if (action === "L") {
       this.moveLeft();
       //console.log("L");
     }
-    if (action == "R") {
+    if (action === "R") {
       this.moveRight();
       //console.log("R");
     }
-    if (action == "-") {
+    if (action === "-") {
       this.stop();
       //console.log("-");
     }
-    if (action == "1") {
+    if (action === "1") {
       this.shoot();
       //console.log("1");
     }

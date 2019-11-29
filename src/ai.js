@@ -10,7 +10,9 @@ export default class AI {
   }
 
   randomAction(tank) {
-    this.action = this.actions[Math.floor(Math.random() * 5)];
+    if (this.game.gamestate === 1)
+      this.action = this.actions[Math.floor(Math.random() * 5)];
+    else this.action = "pause";
     //console.log(this.action);
     tank.step(this.action);
   }

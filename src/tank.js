@@ -102,7 +102,7 @@ export default class Tank {
   }
 
   drawMuzzle(ctx) {
-    ctx.fillStyle = "#ddd";
+    ctx.fillStyle = "#aaa";
     if (this.axis === "+X")
       ctx.fillRect(
         this.position.x + this.width / 2,

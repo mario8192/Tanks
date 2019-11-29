@@ -28,13 +28,13 @@ export default class AITank {
     this.terrain = game.terrain;
     this.fires = [];
 
-    this.routine = [];
+    this.steps = [];
 
     this.noUpdate = 0;
 
     //state vars
     //this.state = null;
-    this.reward = 0;
+    this.reward = null;
   }
 
   state() {
@@ -100,43 +100,117 @@ export default class AITank {
 
   //Step function
 
-  calculateReward() {}
+  calculateReward() {
+    //calculating reward
+
+    //initial reward 0 if survived
+    this.reward = 0;
+
+    //fire + aitank  -->  reward = -1
+    this.game.tank.fires.forEach(fire => {
+      if (fire.axis === "+Y" || fire.axis === "-Y")
+        if (
+          this.position.x <= fire.position.x &&
+          fire.position.x <= this.position.x + this.width
+        ) {
+          this.reward = -1;
+          return;
+        }
+
+      if (fire.axis === "+X" || fire.axis === "-X")
+        if (
+          this.position.y <= fire.position.y &&
+          fire.position.y <= this.position.y + this.height
+        ) {
+          this.reward = -1;
+          return;
+        }
+    });
+
+    //aifire + tank  -->  reward = 1
+
+    this.fires.forEach(fire => {
+      if (fire.axis === "+Y" || fire.axis === "-Y")
+        if (
+          this.game.tank.position.x <= fire.position.x &&
+          fire.position.x <= this.game.tank.position.x + this.game.tank.width
+        ) {
+          this.reward = 1;
+          return;
+        }
+      if (fire.axis === "+X" || fire.axis === "-X")
+        if (
+          this.game.tank.position.y <= fire.position.y &&
+          fire.position.y <= this.game.tank.position.y + this.game.tank.height
+        ) {
+          this.reward = 1;
+          return;
+        }
+    });
+
+    //aifire + aitank  -->  reward = 1
+    this.fires.forEach(fire => {
+      this.game.ai.tanks.forEach(aitank2 => {
+        if (aitank2 !== this) {
+          if (fire.axis === "+Y" || fire.axis === "-Y")
+            if (
+              aitank2.position.x <= fire.position.x &&
+              fire.position.x <= aitank2.position.x + aitank2.width
+            ) {
+              this.reward = 1;
+              return;
+            }
+
+          if (fire.axis === "+X" || fire.axis === "-X")
+            if (
+              aitank2.position.y <= fire.position.y &&
+              fire.position.y <= aitank2.position.y + aitank2.height
+            ) {
+              this.reward = 1;
+              return;
+            }
+        }
+      });
+    });
+  }
 
   step(action) {
     if (action == "U") {
-      aitank.moveUp();
+      this.moveUp();
       //console.log("U");
     }
     if (action == "D") {
-      aitank.moveDown();
+      this.moveDown();
       //console.log("D");
     }
     if (action == "L") {
-      aitank.moveLeft();
+      this.moveLeft();
       //console.log("L");
     }
     if (action == "R") {
-      aitank.moveRight();
+      this.moveRight();
       //console.log("R");
     }
     if (action == "-") {
-      aitank.stop();
+      this.stop();
       //console.log("-");
     }
     if (action == "1") {
-      aitank.shoot();
+      this.shoot();
       //console.log("1");
     }
 
-    return [this.reward, this.game.currentState()];
+    this.calculateReward();
+    console.log([this.reward, this.game.currentState()]);
+    //return [this.reward, this.game.currentState()];
   }
 
-  setRoutine(adt, routine) {
-    this.routine = routine;
-    this.routineTank(adt);
+  setSteps(adt, steps) {
+    this.steps = steps;
+    this.callStepFunction(adt);
   }
 
-  routineTank(adt) {
+  callStepFunction(adt) {
     let currentTask = 0;
     let aitank = this;
     let game = this.game;
@@ -151,68 +225,75 @@ export default class AITank {
       )
         return;
 
-      if (currentTask >= aitank.routine.length) currentTask = 0;
+      if (currentTask >= aitank.steps.length) currentTask = 0;
 
-      if (aitank.routine[currentTask] == "U") {
-        aitank.moveUp();
+      if (aitank.steps[currentTask] == "U") {
+        //aitank.moveUp();
         //console.log("U");
+        aitank.step("U");
       }
-      if (aitank.routine[currentTask] == "D") {
-        aitank.moveDown();
+      if (aitank.steps[currentTask] == "D") {
+        //aitank.moveDown();
         //console.log("D");
+        aitank.step("D");
       }
-      if (aitank.routine[currentTask] == "L") {
-        aitank.moveLeft();
+      if (aitank.steps[currentTask] == "L") {
+        //aitank.moveLeft();
         //console.log("L");
+        aitank.step("L");
       }
-      if (aitank.routine[currentTask] == "R") {
-        aitank.moveRight();
+      if (aitank.steps[currentTask] == "R") {
+        //aitank.moveRight();
         //console.log("R");
+        aitank.step("R");
       }
-      if (aitank.routine[currentTask] == "-") {
-        aitank.stop();
+      if (aitank.steps[currentTask] == "-") {
+        //aitank.stop();
         //console.log("-");
+        aitank.step("-");
       }
-      if (aitank.routine[currentTask] == "1") {
-        aitank.shoot();
+      if (aitank.steps[currentTask] == "1") {
+        //aitank.shoot();
         //console.log("1");
+        aitank.step("1");
       }
 
       currentTask += 1;
     }, adt);
-
-    // setInterval(function() {
-    //   console.log(this);
-    //   this.moveDown().bind(this);
-    //   setInterval(function() {
-    //     this.stop();
-    //     setInterval(function() {
-    //       this.shoot();
-    //       setInterval(function() {
-    //         setInterval(function() {
-    //           setInterval(function() {}, 1000);
-    //         }, aiTime);
-    //       }, aiTime);
-    //     }, aiTime);
-    //   }, aiTime);
-    // }, aiTime);
-    //setTimeout(this.moveDown(), 500);
-    //this.moveLeft();
-    //setTimeout(this.stop, 1000);
-    //this.stop();
-    //this.shoot();
-    //setTimeout(this.moveDown(), 1000);
-    //setTimeout(this.stop(), 2000);
-    //setTimeout(this.shoot(), 2500);
-    //setTimeout(this.stop(), 1000);
   }
+
+  // setInterval(function() {
+  //   console.log(this);
+  //   this.moveDown().bind(this);
+  //   setInterval(function() {
+  //     this.stop();
+  //     setInterval(function() {
+  //       this.shoot();
+  //       setInterval(function() {
+  //         setInterval(function() {
+  //           setInterval(function() {}, 1000);
+  //         }, aiTime);
+  //       }, aiTime);
+  //     }, aiTime);
+  //   }, aiTime);
+  // }, aiTime);
+  //setTimeout(this.moveDown(), 500);
+  //this.moveLeft();
+  //setTimeout(this.stop, 1000);
+  //this.stop();
+  //this.shoot();
+  //setTimeout(this.moveDown(), 1000);
+  //setTimeout(this.stop(), 2000);
+  //setTimeout(this.shoot(), 2500);
+  //setTimeout(this.stop(), 1000);
+  //}
 
   lifeEnd() {
     this.life = 0;
   }
 
   drawMuzzle(ctx) {
-    ctx.fillStyle = "#8f8f8f";
+    ctx.fillStyle = "#9f9f9f";
     if (this.axis === "+X")
       ctx.fillRect(
         this.position.x + this.width / 2,

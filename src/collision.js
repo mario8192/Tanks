@@ -94,9 +94,6 @@ export default class Collision {
         aitank.position.x = this.game.gameWidth - aitank.width;
       if (aitank.position.y + aitank.height > this.game.gameHeight)
         aitank.position.y = this.game.gameHeight - aitank.height;
-
-      //initial reward 0 if survived
-      aitank.reward = 0;
     });
 
     //tank + aitank
@@ -169,7 +166,6 @@ export default class Collision {
             //console.log("opp hit");
             fire.lifeEnd();
             tank.lifeEnd();
-            tank.reward = -1;
           }
         });
       });
@@ -242,10 +238,21 @@ export default class Collision {
       aitank.fires.forEach(fire => {
         if (detectCollision(fire, this.tank)) {
           fire.lifeEnd();
-          aitank.reward = 1;
           this.game.loseLife();
           this.tank.respawn();
         }
+      });
+    });
+
+    //aifire + aitank
+    this.ai.tanks.forEach(aitank => {
+      aitank.fires.forEach(fire => {
+        this.ai.tanks.forEach(aitank2 => {
+          if (aitank !== aitank2 && detectCollision(fire, aitank2)) {
+            fire.lifeEnd();
+            aitank2.lifeEnd();
+          }
+        });
       });
     });
 

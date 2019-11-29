@@ -32,12 +32,13 @@ export default class Game {
     this.terrain = new Terrain(this);
     this.terrain.buildWalls();
 
-    this.ai = new AI(this);
-    this.ai.buildOpps();
-    this.ai.buildRoutines();
+    //this.ai.buildRoutines();
     //console.log("this in game.js is", this);
 
     this.tank = new Tank(this);
+
+    this.ai = new AI(this);
+    this.ai.buildOpponents();
 
     this.collision = new Collision(this);
     // this.collisionTank = new Collision(this);
@@ -71,8 +72,10 @@ export default class Game {
     this.terrain.clear();
     this.terrain.buildWalls();
     this.ai.clear();
-    this.ai.buildOpps();
-    this.execAIroutine(250);
+    this.ai.buildOpponents();
+    this.ai.buildSteps();
+    //this.execAIroutine(250);
+    this.execSteps(250);
     this.setFireLimit(200);
     this.gamestate = GAMESTATE.RUNNING;
   }
@@ -88,11 +91,9 @@ export default class Game {
     }, limit);
   }
 
-  execSteps() {}
-
-  // needs reworking
-  execAIroutine(adt) {
-    this.ai.routine(adt);
+  // needs reworking               *no more
+  execSteps(adt) {
+    this.ai.runSteps(adt);
     //setTimeout(this.ai.routine(), 1000);
   }
 

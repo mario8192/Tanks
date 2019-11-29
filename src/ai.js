@@ -4,22 +4,21 @@ export default class AI {
   constructor(game) {
     this.tanks = [];
     this.game = game;
-    this.routines = [];
+    this.steps = [];
   }
 
-  buildRoutines() {
-    this.routines[0] = ["D", "1", "L", "1", "U", "R"];
+  buildSteps() {
+    this.steps[0] = ["D", "1", "L", "1", "U", "R"];
     // this.routines[1] = ["R", "1", "U", "D", "1", "L"];
     // this.routines[2] = ["R", "1", "R", "L", "-", "1", "U"];
     // this.routines[3] = ["D", "1", "U", "1", "-", "-"];
     //this.routine(adt);
   }
 
-  routine(adt) {
+  runSteps(adt) {
     let i = 0;
     this.tanks.forEach(tank => {
-      tank.setRoutine(adt, this.routines[i]);
-      //tank.step("");
+      tank.setSteps(adt, this.steps[i]);
       i += 1;
     });
   }
@@ -28,8 +27,8 @@ export default class AI {
     if (this.tanks !== undefined) this.tanks.splice(0, this.tanks.length);
   }
 
-  buildOpps() {
-    this.tanks.push(new AITank(this.game, 600, 100));
+  buildOpponents() {
+    this.tanks.push(new AITank(this.game, 385, 30));
     //this.tanks.push(new AITank(this.game, 100, 400));
     //this.tanks.push(new AITank(this.game, 200, 60));
     //this.tanks.push(new AITank(this.game, 650, 700));

@@ -38,7 +38,11 @@ export function step(bot, action) {
     let i = 1;
     bot.game.ai.tanks.forEach(elem => {
       id = "line-" + i;
+
       document.getElementById(id).innerHTML = elem.reward + "   " + array[i];
+      if (elem.reward === 0) document.getElementById(id).style.color = "white";
+      if (elem.reward === 1) document.getElementById(id).style.color = "cyan";
+      if (elem.reward === -1) document.getElementById(id).style.color = "red";
       i += 1;
     });
 

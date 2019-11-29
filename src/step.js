@@ -1,4 +1,5 @@
 import { calculateReward } from "./calculateReward.js";
+import { updateConsole } from "./customConsole.js";
 
 //Step functions
 export function step(bot, action) {
@@ -34,18 +35,8 @@ export function step(bot, action) {
     let array = bot.game.currentState();
     console.log(bot.reward, array);
 
-    let id;
-    let i = 1;
-    bot.game.ai.tanks.forEach(elem => {
-      id = "line-" + i;
-
-      document.getElementById(id).innerHTML = elem.reward + "   " + array[i];
-      if (elem.reward === 0) document.getElementById(id).style.color = "white";
-      if (elem.reward === 1) document.getElementById(id).style.color = "cyan";
-      if (elem.reward === -1) document.getElementById(id).style.color = "red";
-      i += 1;
-    });
-
+    //custom console
+    updateConsole(bot, array);
     //return [this.reward, this.game.currentState()];
   }
 }

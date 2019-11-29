@@ -40,7 +40,6 @@ export default class Game {
     this.tank = new Tank(this);
 
     this.ai = new AI(this);
-    this.ai.buildOpponents();
 
     this.collision = new Collision(this);
     // this.collisionTank = new Collision(this);
@@ -93,18 +92,11 @@ export default class Game {
     this.execSteps(250);
     this.setFireLimit(200);
     this.gamestate = GAMESTATE.RUNNING;
-
-    let i = 1;
-    this.ai.tanks.forEach(tank => {
-      $(document.getElementById("console")).append(() => {
-        return '<p id ="line-' + i + '" />';
-      });
-      i += 1;
-    });
   }
 
   loseLife() {
     this.lives -= 1;
+    if (this.lives < 1) this.gamestate = GAMESTATE.GAMEOVER;
   }
 
   setFireLimit(limit) {
@@ -138,11 +130,12 @@ export default class Game {
       //collision logic goes here
       this.collision.check();
 
+      this.ai.removeEmpty();
+      this.ai.update(deltaTime);
       //this.collision.update(deltaTime);
       this.tank.update(deltaTime);
 
       //console.log(this.ai.tanks[2].noUpdate, this.ai.tanks[2].axis);
-      this.ai.update(deltaTime);
 
       gameScreenDrawn = {
         PAUSED: false,

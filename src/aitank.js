@@ -98,8 +98,9 @@ export default class AITank {
     this.velY = 0;
   }
 
-  //Step function
+  //Step functions
 
+  ////   TO BE TREATED AS BLACK BOX  ---v
   calculateReward() {
     //calculating reward
 
@@ -108,40 +109,63 @@ export default class AITank {
 
     //fire + aitank  -->  reward = -1
     this.game.tank.fires.forEach(fire => {
-      if (fire.axis === "+Y" || fire.axis === "-Y")
+      if (
+        this.position.x <= fire.position.x &&
+        fire.position.x <= this.position.x + this.width
+      ) {
         if (
-          this.position.x <= fire.position.x &&
-          fire.position.x <= this.position.x + this.width
+          (fire.axis === "+Y" && fire.position.y <= this.position.y) ||
+          (fire.axis === "-Y" &&
+            fire.position.y >= this.position.y + this.height)
         ) {
           this.reward = -1;
           return;
         }
+      }
 
-      if (fire.axis === "+X" || fire.axis === "-X")
+      if (
+        this.position.y <= fire.position.y &&
+        fire.position.y <= this.position.y + this.height
+      ) {
         if (
-          this.position.y <= fire.position.y &&
-          fire.position.y <= this.position.y + this.height
+          (fire.axis === "+X" && fire.position.x <= this.position.x) ||
+          (fire.axis === "-X" &&
+            fire.position.x >= this.position.x + this.width)
         ) {
           this.reward = -1;
           return;
         }
+      }
     });
 
     //aifire + tank  -->  reward = 1
 
     this.fires.forEach(fire => {
-      if (fire.axis === "+Y" || fire.axis === "-Y")
+      if (
+        this.game.tank.position.x <= fire.position.x &&
+        fire.position.x <= this.game.tank.position.x + this.game.tank.width
+      )
         if (
-          this.game.tank.position.x <= fire.position.x &&
-          fire.position.x <= this.game.tank.position.x + this.game.tank.width
+          (fire.axis === "+Y" &&
+            fire.position.y <= this.game.tank.position.y) ||
+          (fire.axis === "-Y" &&
+            fire.position.y >=
+              this.game.tank.position.y + this.game.tank.height)
         ) {
           this.reward = 1;
           return;
         }
-      if (fire.axis === "+X" || fire.axis === "-X")
+
+      if (
+        this.game.tank.position.y <= fire.position.y &&
+        fire.position.y <= this.game.tank.position.y + this.game.tank.height
+      )
         if (
-          this.game.tank.position.y <= fire.position.y &&
-          fire.position.y <= this.game.tank.position.y + this.game.tank.height
+          (fire.axis === "+X" &&
+            fire.position.x <= this.game.tank.position.x) ||
+          (fire.axis === "-X" &&
+            fire.position.x >=
+              this.game.tank.position.x + this.game.tank.height)
         ) {
           this.reward = 1;
           return;
@@ -152,19 +176,27 @@ export default class AITank {
     this.fires.forEach(fire => {
       this.game.ai.tanks.forEach(aitank2 => {
         if (aitank2 !== this) {
-          if (fire.axis === "+Y" || fire.axis === "-Y")
+          if (
+            aitank2.position.x <= fire.position.x &&
+            fire.position.x <= aitank2.position.x + aitank2.width
+          )
             if (
-              aitank2.position.x <= fire.position.x &&
-              fire.position.x <= aitank2.position.x + aitank2.width
+              (fire.axis === "+Y" && fire.position.y <= aitank2.position.y) ||
+              (fire.axis === "-Y" &&
+                fire.position.y >= aitank2.position.y + aitank2.height)
             ) {
               this.reward = 1;
               return;
             }
 
-          if (fire.axis === "+X" || fire.axis === "-X")
+          if (
+            aitank2.position.y <= fire.position.y &&
+            fire.position.y <= aitank2.position.y + aitank2.height
+          )
             if (
-              aitank2.position.y <= fire.position.y &&
-              fire.position.y <= aitank2.position.y + aitank2.height
+              (fire.axis === "+X" && fire.position.x <= aitank2.position.x) ||
+              (fire.axis === "-X" &&
+                fire.position.x >= aitank2.position.x + aitank2.width)
             ) {
               this.reward = 1;
               return;
@@ -172,7 +204,7 @@ export default class AITank {
         }
       });
     });
-  }
+  } ////  ^--------- TO BE TREATED AS BLACK BOX
 
   step(action) {
     if (action == "U") {

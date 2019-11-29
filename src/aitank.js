@@ -259,8 +259,20 @@ export default class AITank {
     if (this.noUpdate) {
       this.noUpdate = 0;
     } else {
-      this.position.x += this.velX * this.maxSpeed;
-      this.position.y += this.velY * this.maxSpeed;
+      // this.position.x += this.velX * this.maxSpeed;
+      // this.position.y += this.velY * this.maxSpeed;
+
+      let count = this.maxSpeed;
+      while (count) {
+        if (!this.noUpdate) {
+          if (this.axis === "+X" || this.axis === "-X")
+            this.position.x += this.velX;
+          if (this.axis === "+Y" || this.axis === "-Y")
+            this.position.y += this.velY;
+        }
+        this.game.collision.check();
+        count -= 1;
+      }
     }
   }
 
@@ -284,6 +296,8 @@ export default class AITank {
     //   this.position.x -= this.velX * 5;
     //   this.position.y -= this.velY * 5;
     // }
+
+    this.updatePosition();
 
     if (this.fires !== undefined)
       this.fires.forEach(fire => {

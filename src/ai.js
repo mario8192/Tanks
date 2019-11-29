@@ -9,9 +9,9 @@ export default class AI {
 
   buildRoutines() {
     this.routines[0] = ["D", "1", "L", "1", "U", "R"];
-    this.routines[1] = ["R", "1", "U", "D", "1", "L"];
-    this.routines[2] = ["R", "1", "R", "L", "-", "1", "U"];
-    this.routines[3] = ["D", "1", "U", "1", "-", "-"];
+    // this.routines[1] = ["R", "1", "U", "D", "1", "L"];
+    // this.routines[2] = ["R", "1", "R", "L", "-", "1", "U"];
+    // this.routines[3] = ["D", "1", "U", "1", "-", "-"];
     //this.routine(adt);
   }
 
@@ -19,7 +19,7 @@ export default class AI {
     let i = 0;
     this.tanks.forEach(tank => {
       tank.setRoutine(adt, this.routines[i]);
-      //tank.step();
+      //tank.step("");
       i += 1;
     });
   }

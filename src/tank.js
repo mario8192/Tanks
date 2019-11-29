@@ -10,7 +10,7 @@ export default class Tank {
     this.width = 30;
     this.height = 30;
 
-    this.maxSpeed = 1;
+    this.maxSpeed = 2;
     this.velX = 0;
     this.velY = 0;
 
@@ -97,7 +97,8 @@ export default class Tank {
 
     this.axis = "-Y";
 
-    setTimeout(console.log("respawned"), 500);
+    setTimeout(console.log("respawned"));
+    console.log("lives ", this.game.lives);
   }
 
   drawMuzzle(ctx) {
@@ -149,10 +150,18 @@ export default class Tank {
       // this.position.x += this.velX * this.maxSpeed;
       // this.position.y += this.velY * this.maxSpeed;
 
-      if (this.axis === "+X" || this.axis === "-X")
-        this.position.x += this.velX;
-      if (this.axis === "+Y" || this.axis === "-Y")
-        this.position.y += this.velY;
+      let count = this.maxSpeed;
+      while (count) {
+        if (!this.noUpdate) {
+          if (this.axis === "+X" || this.axis === "-X")
+            this.position.x += this.velX;
+          if (this.axis === "+Y" || this.axis === "-Y")
+            this.position.y += this.velY;
+        }
+
+        this.game.collision.check();
+        count -= 1;
+      }
     }
   }
 
@@ -181,7 +190,9 @@ export default class Tank {
     // if (this.position.y + this.height > this.gameHeight)
     //   this.position.y = this.gameHeight - this.height;
 
-    if (this.fires !== undefined)
+    this.updatePosition();
+
+    if (this.fires)
       this.fires.forEach(fire => {
         fire.update(deltaTime);
       });

@@ -120,7 +120,6 @@ function gameLoop(timestamp) {
 
   //ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-  game.collision.check(deltaTime);
   game.update(deltaTime);
   game.draw(ctx);
 

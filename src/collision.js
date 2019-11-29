@@ -65,15 +65,15 @@ export default class Collision {
     return 0;
   }
 
-  check(deltaTime) {
-    if (this.game.gamestate === 1) this.update(deltaTime);
+  check() {
+    if (this.game.gamestate === 1) this.update();
     else {
       //console.log("high cpu for some fukn reason");   //it's fixed now
       return;
     }
   }
 
-  update(deltaTime) {
+  update() {
     // if (detectCollision(this.terrain.walls[0], this.terrain.walls[2]))
     //   console.log("trueeeeee");
     // else console.log("falseeeee");
@@ -94,6 +94,9 @@ export default class Collision {
         aitank.position.x = this.game.gameWidth - aitank.width;
       if (aitank.position.y + aitank.height > this.game.gameHeight)
         aitank.position.y = this.game.gameHeight - aitank.height;
+
+      //initial reward 0 if survived
+      aitank.reward = 0;
     });
 
     //tank + aitank
@@ -108,7 +111,7 @@ export default class Collision {
 
           //aitank.stop();
           let axis = this.axisOfCollision(this.tank, aitank);
-          console.log(axis);
+          //console.log(axis);
 
           if (axis === "^" || axis === ">" || axis === "v" || axis === "<") {
             this.tank.noUpdate = 1;
@@ -224,7 +227,7 @@ export default class Collision {
         this.ai.tanks.forEach(aitank => {
           aitank.fires.forEach(fire => {
             if (detectCollision(fire, wall)) {
-              console.log("wall hit");
+              //console.log("wall hit");
               fire.lifeEnd();
               wall.reduce(fire.axis);
             }
@@ -238,7 +241,6 @@ export default class Collision {
     this.ai.tanks.forEach(aitank => {
       aitank.fires.forEach(fire => {
         if (detectCollision(fire, this.tank)) {
-          console.log("lives ", this.game.lives);
           fire.lifeEnd();
           aitank.reward = 1;
           this.game.loseLife();
@@ -247,8 +249,8 @@ export default class Collision {
       });
     });
 
-    this.game.tank.updatePosition();
-    this.game.ai.tanks.forEach(aitank => aitank.updatePosition());
+    // this.game.tank.updatePosition();
+    // this.game.ai.tanks.forEach(aitank => aitank.updatePosition());
     //console.log(this.ai.tanks[2].noUpdate, this.ai.tanks[2].axis);
   }
 }

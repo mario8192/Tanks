@@ -111,6 +111,7 @@ export default class Game {
     //   return;
     if (this.gamestate === GAMESTATE.RUNNING) {
       //collision logic goes here
+      this.collision.check();
 
       //this.collision.update(deltaTime);
       this.tank.update(deltaTime);
@@ -209,10 +210,10 @@ export default class Game {
   }
 
   togglePause() {
-    if (this.gamestate == GAMESTATE.PAUSED) {
-      this.gamestate = GAMESTATE.RUNNING;
-    } else {
+    if (this.gamestate == GAMESTATE.RUNNING) {
       this.gamestate = GAMESTATE.PAUSED;
+    } else if (this.gamestate == GAMESTATE.PAUSED) {
+      this.gamestate = GAMESTATE.RUNNING;
     }
   }
 

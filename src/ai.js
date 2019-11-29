@@ -29,9 +29,9 @@ export default class AI {
 
   buildOpps() {
     this.tanks.push(new AITank(this.game, 600, 100));
-    this.tanks.push(new AITank(this.game, 100, 400));
-    this.tanks.push(new AITank(this.game, 200, 60));
-    this.tanks.push(new AITank(this.game, 650, 700));
+    //this.tanks.push(new AITank(this.game, 100, 400));
+    //this.tanks.push(new AITank(this.game, 200, 60));
+    //this.tanks.push(new AITank(this.game, 650, 700));
     //console.log(this.tanks);
   }
 

@@ -88,6 +88,8 @@ export default class Game {
     }, limit);
   }
 
+  execSteps() {}
+
   // needs reworking
   execAIroutine(adt) {
     this.ai.routine(adt);

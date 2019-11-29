@@ -8,11 +8,12 @@ export default class Collision {
     this.terrain = game.terrain;
   }
 
-  axisOfCollision(tank, wall) {
-    let wallTop = wall.position.y;
-    let wallLeft = wall.position.x;
-    let wallRight = wall.position.x + wall.width;
-    let wallBottom = wall.position.y + wall.height;
+  axisOfCollision(tank, box) {
+    //                ^----------  (moving obj, stationary obj)
+    let boxTop = box.position.y;
+    let boxLeft = box.position.x;
+    let boxRight = box.position.x + box.width;
+    let boxBottom = box.position.y + box.height;
 
     //console.log(obj2);
 
@@ -21,44 +22,44 @@ export default class Collision {
     let tankRight = tank.position.x + tank.width;
     let tankBottom = tank.position.y + tank.height;
 
-    if (tankTop === wallBottom) {
-      if (tank.velY === -1) {
+    if (tankTop === boxBottom) {
+      if (tank.velY === -1 || box.velY === 1) {
         if (
-          (tankRight <= wallRight && tankLeft >= wallLeft) ||
-          (tankLeft < wallLeft && tankRight > wallLeft) ||
-          (tankRight > wallRight && tankLeft < wallRight)
+          (tankRight <= boxRight && tankLeft >= boxLeft) ||
+          (tankLeft < boxLeft && tankRight > boxLeft) ||
+          (tankRight > boxRight && tankLeft < boxRight)
         )
-          return 1;
+          return "^";
       } //else return 0;
     }
-    if (tankRight === wallLeft) {
-      if (tank.velX === 1) {
+    if (tankRight === boxLeft) {
+      if (tank.velX === 1 || box.velX === -1) {
         if (
-          (tankBottom <= wallBottom && tankTop >= wallTop) ||
-          (tankTop < wallTop && tankBottom > wallTop) ||
-          (tankBottom > wallBottom && tankTop < wallBottom)
+          (tankBottom <= boxBottom && tankTop >= boxTop) ||
+          (tankTop < boxTop && tankBottom > boxTop) ||
+          (tankBottom > boxBottom && tankTop < boxBottom)
         )
-          return 2;
+          return ">";
       } //else return 0;
     }
-    if (tankBottom === wallTop) {
-      if (tank.velY === 1) {
+    if (tankBottom === boxTop) {
+      if (tank.velY === 1 || box.velY === -1) {
         if (
-          (tankRight <= wallRight && tankLeft >= wallLeft) ||
-          (tankLeft < wallLeft && tankRight > wallLeft) ||
-          (tankRight > wallRight && tankLeft < wallRight)
+          (tankRight <= boxRight && tankLeft >= boxLeft) ||
+          (tankLeft < boxLeft && tankRight > boxLeft) ||
+          (tankRight > boxRight && tankLeft < boxRight)
         )
-          return 3;
+          return "v";
       } // else return 0;
     }
-    if (tankLeft === wallRight) {
-      if (tank.velX === -1) {
+    if (tankLeft === boxRight) {
+      if (tank.velX === -1 || box.velY === 1) {
         if (
-          (tankBottom <= wallBottom && tankTop >= wallTop) ||
-          (tankTop < wallTop && tankBottom > wallTop) ||
-          (tankBottom > wallBottom && tankTop < wallBottom)
+          (tankBottom <= boxBottom && tankTop >= boxTop) ||
+          (tankTop < boxTop && tankBottom > boxTop) ||
+          (tankBottom > boxBottom && tankTop < boxBottom)
         )
-          return 4;
+          return "<";
       } //else return 0;
     }
     return 0;
@@ -67,7 +68,7 @@ export default class Collision {
   check(deltaTime) {
     if (this.game.gamestate === 1) this.update(deltaTime);
     else {
-      console.log("high cpu for some fukn reason");
+      //console.log("high cpu for some fukn reason");   //it's fixed now
       return;
     }
   }
@@ -106,15 +107,10 @@ export default class Collision {
           // aitank.position.y -= aitank.velY * 5;
 
           //aitank.stop();
-          let axis = this.axisOfCollision(aitank, this.tank);
-          //if (axis === 0) console.log(axis);
+          let axis = this.axisOfCollision(this.tank, aitank);
+          console.log(axis);
 
-          if (
-            (axis === 1 && aitank.velY === -1) ||
-            (axis === 2 && aitank.velX === 1) ||
-            (axis === 3 && aitank.velY === 1) ||
-            (axis === 4 && aitank.velX === -1)
-          ) {
+          if (axis === "^" || axis === ">" || axis === "v" || axis === "<") {
             this.tank.noUpdate = 1;
             aitank.noUpdate = 1;
             //return true;
@@ -140,12 +136,7 @@ export default class Collision {
         if (detectCollision(this.tank, wall)) {
           let axis = this.axisOfCollision(this.tank, wall);
           //if (axis === 0) console.log(axis);
-          if (
-            (axis === 1 && this.tank.velY === -1) ||
-            (axis === 2 && this.tank.velX === 1) ||
-            (axis === 3 && this.tank.velY === 1) ||
-            (axis === 4 && this.tank.velX === -1)
-          ) {
+          if (axis === "^" || axis === ">" || axis === "v" || axis === "<") {
             this.tank.noUpdate = 1;
             //return true;
           }
@@ -154,7 +145,7 @@ export default class Collision {
     }
 
     //fire + wall
-    if (this.terrain.walls !== undefined && this.tank.fires.length !== 0) {
+    if (this.terrain.walls && this.tank.fires.length) {
       this.terrain.walls.forEach(wall => {
         this.tank.fires.forEach(fire => {
           if (detectCollision(fire, wall)) {
@@ -168,13 +159,14 @@ export default class Collision {
     }
 
     //fire + aitank
-    if (this.ai.tanks !== undefined && this.tank.fires.length !== 0) {
+    if (this.ai.tanks && this.tank.fires.length) {
       this.ai.tanks.forEach(tank => {
         this.tank.fires.forEach(fire => {
           if (detectCollision(fire, tank)) {
             //console.log("opp hit");
             fire.lifeEnd();
             tank.lifeEnd();
+            tank.reward = -1;
           }
         });
       });
@@ -193,18 +185,18 @@ export default class Collision {
     //   });
     // }
 
-    if (this.ai.tanks !== undefined) {
+    if (this.ai.tanks) {
       this.ai.tanks.forEach(aitank => {
-        if (this.terrain.walls !== undefined) {
+        if (this.terrain.walls) {
           this.terrain.walls.forEach(wall => {
             if (detectCollision(aitank, wall)) {
               let axis = this.axisOfCollision(aitank, wall);
               //console.log(axis);
               if (
-                (axis === 1 && aitank.axis === "-Y") ||
-                (axis === 2 && aitank.axis === "+X") ||
-                (axis === 3 && aitank.axis === "+Y") ||
-                (axis === 4 && aitank.axis === "-X")
+                (axis === "^" && aitank.axis === "-Y") ||
+                (axis === ">" && aitank.axis === "+X") ||
+                (axis === "v" && aitank.axis === "+Y") ||
+                (axis === "<" && aitank.axis === "-X")
               ) {
                 //if (axis === 0) console.log(axis);
 
@@ -227,12 +219,12 @@ export default class Collision {
     }
 
     //aifire + wall
-    if (this.terrain.walls !== undefined) {
+    if (this.terrain.walls) {
       this.terrain.walls.forEach(wall => {
         this.ai.tanks.forEach(aitank => {
           aitank.fires.forEach(fire => {
             if (detectCollision(fire, wall)) {
-              //console.log("wall hit");
+              console.log("wall hit");
               fire.lifeEnd();
               wall.reduce(fire.axis);
             }
@@ -248,6 +240,7 @@ export default class Collision {
         if (detectCollision(fire, this.tank)) {
           console.log("lives ", this.game.lives);
           fire.lifeEnd();
+          aitank.reward = 1;
           this.game.loseLife();
           this.tank.respawn();
         }

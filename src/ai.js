@@ -19,6 +19,7 @@ export default class AI {
     let i = 0;
     this.tanks.forEach(tank => {
       tank.setRoutine(adt, this.routines[i]);
+      //tank.step();
       i += 1;
     });
   }

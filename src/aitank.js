@@ -31,6 +31,10 @@ export default class AITank {
     this.routine = [];
 
     this.noUpdate = 0;
+
+    //state vars
+    //this.state = null;
+    this.reward = 0;
   }
 
   state() {
@@ -92,6 +96,39 @@ export default class AITank {
     //console.log("stopped");
     this.velX = 0;
     this.velY = 0;
+  }
+
+  //Step function
+
+  calculateReward() {}
+
+  step(action) {
+    if (action == "U") {
+      aitank.moveUp();
+      //console.log("U");
+    }
+    if (action == "D") {
+      aitank.moveDown();
+      //console.log("D");
+    }
+    if (action == "L") {
+      aitank.moveLeft();
+      //console.log("L");
+    }
+    if (action == "R") {
+      aitank.moveRight();
+      //console.log("R");
+    }
+    if (action == "-") {
+      aitank.stop();
+      //console.log("-");
+    }
+    if (action == "1") {
+      aitank.shoot();
+      //console.log("1");
+    }
+
+    return [this.reward, this.game.currentState()];
   }
 
   setRoutine(adt, routine) {

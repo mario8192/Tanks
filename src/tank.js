@@ -61,7 +61,6 @@ export default class Tank {
     //if (!this.velX && this.velY !== -1) {
     this.velY = 1;
     this.axis = "+Y";
-    console.log("down");
   }
 
   fireCooldown() {

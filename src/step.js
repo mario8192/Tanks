@@ -31,7 +31,17 @@ export function step(bot, action) {
     }
 
     bot.reward = calculateReward(bot);
-    console.log([bot.reward, bot.game.currentState()]);
+    let array = bot.game.currentState();
+    console.log(bot.reward, array);
+
+    let id;
+    let i = 1;
+    bot.game.ai.tanks.forEach(elem => {
+      id = "line-" + i;
+      document.getElementById(id).innerHTML = elem.reward + "   " + array[i];
+      i += 1;
+    });
+
     //return [this.reward, this.game.currentState()];
   }
 }

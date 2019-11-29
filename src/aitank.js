@@ -35,6 +35,7 @@ export default class AITank {
     //state vars
     //this.state = null;
     this.reward = null;
+    this.index = game.ai.tanks.indexOf(this);
   }
 
   moveLeft() {

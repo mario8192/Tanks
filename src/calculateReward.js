@@ -16,6 +16,7 @@ export function calculateReward(bot) {
         (fire.axis === "-Y" && fire.position.y >= bot.position.y + bot.height)
       ) {
         reward = -1;
+        return reward;
       }
     }
 
@@ -28,6 +29,7 @@ export function calculateReward(bot) {
         (fire.axis === "-X" && fire.position.x >= bot.position.x + bot.width)
       ) {
         reward = -1;
+        return reward;
       }
     }
   });
@@ -45,6 +47,7 @@ export function calculateReward(bot) {
           fire.position.y >= bot.game.tank.position.y + bot.game.tank.height)
       ) {
         reward = 1;
+        return reward;
       }
 
     if (
@@ -57,6 +60,7 @@ export function calculateReward(bot) {
           fire.position.x >= bot.game.tank.position.x + bot.game.tank.height)
       ) {
         reward = 1;
+        return reward;
       }
   });
 
@@ -74,6 +78,7 @@ export function calculateReward(bot) {
               fire.position.y >= aitank2.position.y + aitank2.height)
           ) {
             reward = 1;
+            return reward;
           }
 
         if (
@@ -86,6 +91,7 @@ export function calculateReward(bot) {
               fire.position.x >= aitank2.position.x + aitank2.width)
           ) {
             reward = 1;
+            return reward;
           }
       }
     });

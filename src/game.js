@@ -93,6 +93,14 @@ export default class Game {
     this.execSteps(250);
     this.setFireLimit(200);
     this.gamestate = GAMESTATE.RUNNING;
+
+    let i = 1;
+    this.ai.tanks.forEach(tank => {
+      $(document.getElementById("console")).append(() => {
+        return '<p id ="line-' + i + '" />';
+      });
+      i += 1;
+    });
   }
 
   loseLife() {

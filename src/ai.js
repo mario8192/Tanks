@@ -48,8 +48,8 @@ export default class AI {
 
   buildOpponents() {
     this.tanks.push(new AITank(this.game, 385, 30));
-    //this.tanks.push(new AITank(this.game, 100, 400));
-    //this.tanks.push(new AITank(this.game, 200, 60));
+    this.tanks.push(new AITank(this.game, 100, 400));
+    this.tanks.push(new AITank(this.game, 200, 60));
     //this.tanks.push(new AITank(this.game, 650, 700));
     //console.log(this.tanks);
   }

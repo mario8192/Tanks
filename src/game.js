@@ -73,7 +73,7 @@ export default class Game {
     this.terrain.buildWalls();
     this.ai.clear();
     this.ai.buildOpponents();
-    this.ai.buildSteps();
+    //this.ai.buildSteps();
     //this.execAIroutine(250);
     this.execSteps(250);
     this.setFireLimit(200);
@@ -93,7 +93,8 @@ export default class Game {
 
   // needs reworking               *no more
   execSteps(adt) {
-    this.ai.runSteps(adt);
+    //this.ai.runSteps(adt);
+    this.ai.initializeRandomAI(adt);
     //setTimeout(this.ai.routine(), 1000);
   }
 

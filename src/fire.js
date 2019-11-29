@@ -19,7 +19,7 @@ export default class Fire {
 
   draw(ctx) {
     if (!this.life) return;
-    ctx.fillStyle = "#333";
+    ctx.fillStyle = "#ddd";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 

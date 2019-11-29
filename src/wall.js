@@ -13,7 +13,7 @@ export default class Wall {
   }
 
   draw(ctx) {
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#555";
     if (this.height > 0 && this.width > 0)
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }

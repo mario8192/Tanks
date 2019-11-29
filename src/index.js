@@ -4,7 +4,7 @@ import {} from "./fpsmeter.js";
 let canvas = document.getElementById("gameScreen");
 canvas.setAttribute(
   "style",
-  "position: absolute;left: 50%;margin-left:-400px; top: 20%;margin-top:-100px; border:2px solid black"
+  "position: absolute;left: 50%;margin-left:-400px; top: 20%;margin-top:-100px; border:2px solid white"
 );
 let ctx = canvas.getContext("2d");
 

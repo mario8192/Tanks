@@ -212,7 +212,7 @@ export default class AITank {
   }
 
   drawMuzzle(ctx) {
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#8f8f8f";
     if (this.axis === "+X")
       ctx.fillRect(
         this.position.x + this.width / 2,
@@ -245,7 +245,7 @@ export default class AITank {
 
   draw(ctx) {
     if (this.life) {
-      ctx.fillStyle = "#adadad";
+      ctx.fillStyle = "#eee";
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
       this.drawMuzzle(ctx);
       if (this.fires !== undefined)

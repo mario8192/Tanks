@@ -41,13 +41,9 @@ export default class Game {
     this.tank = new Tank(this);
 
     this.ai = new AI(this);
-<<<<<<< Updated upstream
-
-=======
-    this.ai.buildOpponents();
-    this.ai.fillQtable();
-    this.ai.qlogic();
->>>>>>> Stashed changes
+    // this.ai.buildOpponents();
+    // this.ai.fillQtable();
+    // this.ai.qlogic();
     this.collision = new Collision(this);
     // this.collisionTank = new Collision(this);
     // this.collisionAI = new Collision(this);
@@ -55,22 +51,6 @@ export default class Game {
     new InputHandler(this.tank, this);
   }
 
-<<<<<<< Updated upstream
-  fillQtable() {
-    for (let i = 0; i < this.blockSize; i++) {
-      for (let j = 0; j < this.blockSize; j++) {
-        this.qtable.push([
-          (this.gameHeight / 16) * i,
-          (this.gameWidth / 20) * j,
-          [Math.random(), Math.random(), Math.random(), Math.random()]
-        ]);
-      }
-    }
-    console.log(this.qtable);
-  }
-
-=======
->>>>>>> Stashed changes
   currentState() {
     let aiStates = [];
     let i = 0;
@@ -97,6 +77,7 @@ export default class Game {
     this.terrain.buildWalls();
     this.ai.clear();
     this.ai.buildOpponents();
+    this.ai.fillQtable();
     //this.ai.buildSteps();
     //this.execAIroutine(250);
     this.execSteps(400);
@@ -119,7 +100,7 @@ export default class Game {
   // needs reworking               *no more
   execSteps(adt) {
     //this.ai.runSteps(adt);
-    this.ai.initializeRandomAI(adt);
+    this.ai.initializeAI(adt);
     //setTimeout(this.ai.routine(), 1000);
   }
 

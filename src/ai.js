@@ -4,7 +4,7 @@ import { initConsole } from "./customConsole.js";
 
 export default class AI {
   constructor(game) {
-    this.qtable = [];
+    this.qTable = [];
     this.tanks = [];
     this.game = game;
     this.steps = [];
@@ -16,36 +16,45 @@ export default class AI {
     this.newstate = null;
   }
 
-  fillQtable()  {
-    for(let i=0; i<16; i++) {
-      for(let j=0; j<20; j++) {
-        let subQtable = []
-        for(let i=0; i<16; i++) {
-          for(let j=0 ; j<20; j++) {
-            subQtable.push([Math.random(),Math.random(),Math.random(),Math.random()])
+  fillQtable() {
+    for (let i = 0; i < 16; i++) {
+      for (let j = 0; j < 20; j++) {
+        let subQtable = [];
+        for (let i = 0; i < 16; i++) {
+          for (let j = 0; j < 20; j++) {
+            subQtable.push([
+              Math.random(),
+              Math.random(),
+              Math.random(),
+              Math.random()
+            ]);
           }
         }
-        this.qtable.push(subQtable)
+        this.qTable.push(subQtable);
       }
     }
-    console.log(this.qtable)
+    console.log(this.qTable);
   }
 
+  positionToIndex(positions) {
+    // arr[0] = arr[0] / this.game.blockSize;
+    // arr[1] = arr[1] / this.game.blockSize;
 
+    let indexes = [];
+    positions.forEach(elem => {
+      indexes.push(elem / this.game.blockSize);
+    });
 
-  positionToIndex(arr) {
-    arr[0] = arr[0]/40
-    arr[1] = arr[1]/40
-    return arr
+    return indexes;
   }
 
-  getQ(currState)  {
+  getQ(currState) {
     let arr1 = this.positionToIndex(currState[0]);
     let arr2 = this.positionToIndex(currState[1]);
-    let qarr = this.qtable[(arr1[0])*20+arr1[1]][(arr2[0])*20+arr2[1]];
-    let Qval = Math.max(...qarr);
-    let indexOfQ = qarr.indexOf(Qval);
-    return([Qval, indexOfQ]);
+    let qArray = this.qTable[arr1[0] * 20 + arr1[1]][arr2[0] * 20 + arr2[1]];
+    let qValue = Math.max(...qArray);
+    //let indexOfQ = qArray.indexOf(qValue);
+    return [qValue, qArray.indexOf(qValue)];
   }
 
   randomAction(tank) {
@@ -56,9 +65,7 @@ export default class AI {
     step(tank, this.action);
   }
 
-
-  initializeRandomAI(adt) {
-    
+  initializeAI(adt) {
     this.tanks.forEach(tank => {
       setInterval(() => {
         this.qlogic();
@@ -66,19 +73,20 @@ export default class AI {
     });
   }
 
-  qlogic()  {
-    
+  qlogic() {
     let currState = this.game.currentState();
     let currQ = this.getQ(currState);
-    this.action = currQ[1]
-    let somedata = this.tanks[0].step(this.action); ///only for FIRST TANK
+    this.action = currQ[1];
+    let somedata = step(this.tanks[0], this.action); ///only for FIRST TANK
     this.reward = somedata[0];
     this.newState = somedata[1];
-    let maxNextQ = this.getQ(this.newState)
-    let newQ = (1-this.learningRate)*currQ + this.learningRate*(this.reward + this.discount*maxNextQ) 
+    let maxNextQ = this.getQ(this.newState);
+    let newQ =
+      (1 - this.learningRate) * currQ +
+      this.learningRate * (this.reward + this.discount * maxNextQ);
     let arr1 = this.positionToIndex(currState[0]);
     let arr2 = this.positionToIndex(currState[1]);
-    console.log(currState)
+    console.log(currState);
     //this.qtable[(arr1[0])*20+arr1[1]][(arr2[0])*20+arr2[1]] = newQ
   }
 
@@ -102,25 +110,17 @@ export default class AI {
     if (this.tanks !== undefined) this.tanks.splice(0, this.tanks.length);
   }
 
-  setTankIndexes() {
-    this.tanks.forEach(tank => {
-      tank.index = this.tanks.indexOf(tank);
-    });
-  }
-
   buildOpponents() {
     this.tanks.push(new AITank(this.game, 385, 30));
-    this.tanks.push(new AITank(this.game, 100, 400));
-    this.tanks.push(new AITank(this.game, 200, 40));
-    this.tanks.push(new AITank(this.game, 150, 400));
-    this.tanks.push(new AITank(this.game, 500, 550));
-    this.tanks.push(new AITank(this.game, 700, 500));
+    //this.tanks.push(new AITank(this.game, 100, 400));
+    //this.tanks.push(new AITank(this.game, 200, 60));
+    //this.tanks.push(new AITank(this.game, 150, 400));
+    // this.tanks.push(new AITank(this.game, 500, 550));
+    // this.tanks.push(new AITank(this.game, 700, 500));
     //this.tanks.push(new AITank(this.game, 650, 700));
     //console.log(this.tanks);
 
     initConsole(this);
-
-    this.setTankIndexes();
   }
 
   removeEmpty() {

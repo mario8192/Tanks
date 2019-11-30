@@ -4,11 +4,48 @@ import { initConsole } from "./customConsole.js";
 
 export default class AI {
   constructor(game) {
+    this.qtable = [];
     this.tanks = [];
     this.game = game;
     this.steps = [];
     this.action = null;
     this.actions = ["U", "D", "R", "L", "1"];
+    this.learningRate = 0.8;
+    this.discount = 0.6;
+    this.reward = null;
+    this.newstate = null;
+  }
+
+  fillQtable()  {
+    for(let i=0; i<16; i++) {
+      for(let j=0; j<20; j++) {
+        let subQtable = []
+        for(let i=0; i<16; i++) {
+          for(let j=0 ; j<20; j++) {
+            subQtable.push([Math.random(),Math.random(),Math.random(),Math.random()])
+          }
+        }
+        this.qtable.push(subQtable)
+      }
+    }
+    console.log(this.qtable)
+  }
+
+
+
+  positionToIndex(arr) {
+    arr[0] = arr[0]/40
+    arr[1] = arr[1]/40
+    return arr
+  }
+
+  getQ(currState)  {
+    let arr1 = this.positionToIndex(currState[0]);
+    let arr2 = this.positionToIndex(currState[1]);
+    let qarr = this.qtable[(arr1[0])*20+arr1[1]][(arr2[0])*20+arr2[1]];
+    let Qval = Math.max(...qarr);
+    let indexOfQ = qarr.indexOf(Qval);
+    return([Qval, indexOfQ]);
   }
 
   randomAction(tank) {
@@ -19,12 +56,30 @@ export default class AI {
     step(tank, this.action);
   }
 
+
   initializeRandomAI(adt) {
+    
     this.tanks.forEach(tank => {
       setInterval(() => {
-        this.randomAction(tank);
+        this.qlogic();
       }, adt);
     });
+  }
+
+  qlogic()  {
+    
+    let currState = this.game.currentState();
+    let currQ = this.getQ(currState);
+    this.action = currQ[1]
+    let somedata = this.tanks[0].step(this.action); ///only for FIRST TANK
+    this.reward = somedata[0];
+    this.newState = somedata[1];
+    let maxNextQ = this.getQ(this.newState)
+    let newQ = (1-this.learningRate)*currQ + this.learningRate*(this.reward + this.discount*maxNextQ) 
+    let arr1 = this.positionToIndex(currState[0]);
+    let arr2 = this.positionToIndex(currState[1]);
+    console.log(currState)
+    //this.qtable[(arr1[0])*20+arr1[1]][(arr2[0])*20+arr2[1]] = newQ
   }
 
   buildSteps() {

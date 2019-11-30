@@ -12,7 +12,6 @@ const GAME_WIDTH = 800;
 const GAME_HEIGHT = 640;
 
 let game = new Game(GAME_WIDTH, GAME_HEIGHT);
-game.fillQtable();
 //game.execAIroutine(500);
 // game.setFireLimit(200);
 

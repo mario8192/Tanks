@@ -26,6 +26,7 @@ export default class AI {
               Math.random(),
               Math.random(),
               Math.random(),
+              Math.random(),
               Math.random()
             ]);
           }
@@ -74,20 +75,21 @@ export default class AI {
   }
 
   qlogic() {
-    let currState = this.game.currentState();
-    let currQ = this.getQ(currState);
-    this.action = currQ[1];
-    let somedata = step(this.tanks[0], this.actions[this.action]); ///only for FIRST TANK
-    this.reward = somedata[0];
-    this.newState = somedata[1];
-    let maxNextQ = this.getQ(this.newState);
-    let newQ =
-      (1 - this.learningRate) * currQ[0] +
-      this.learningRate * (this.reward + this.discount * maxNextQ);
-    let arr1 = this.positionToIndex(currState[0]);
-    let arr2 = this.positionToIndex(currState[1]);
-    console.log(currState);
-    //this.qtable[(arr1[0])*20+arr1[1]][(arr2[0])*20+arr2[1]] = newQ
+    if (this.game.gamestate === 1)  {
+      let currState = this.game.currentState();
+      let currQ = this.getQ(currState);
+      this.action = currQ[1];
+      let somedata = step(this.tanks[0], this.actions[this.action]); ///only for FIRST TANK
+      this.reward = somedata[0];
+      this.newState = somedata[1];
+      let maxNextQ = this.getQ(this.newState);
+      let newQ =
+        (1 - this.learningRate) * currQ[0] +
+        this.learningRate * (this.reward + this.discount * maxNextQ);
+      let arr1 = this.positionToIndex(currState[0]);
+      let arr2 = this.positionToIndex(currState[1]);
+      this.qTable[arr1[0] * 20 + arr1[1]][arr2[0] * 20 + arr2[1]][this.action] = newQ
+    }
   }
 
   buildSteps() {

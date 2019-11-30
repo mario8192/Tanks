@@ -42,9 +42,6 @@ export default class Game {
 
     this.ai = new AI(this);
 
-    this.ai.buildOpponents();
-    this.ai.fillQtable();
-    this.ai.qlogic();
     // this.ai.buildOpponents();
     // this.ai.fillQtable();
     // this.ai.qlogic();

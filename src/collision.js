@@ -107,22 +107,13 @@ export default class Collision {
           // aitank.position.y -= aitank.velY * 5;
 
           //aitank.stop();
-          let axis = this.axisOfCollision(this.tank, aitank);
+          //let axis = this.axisOfCollision(this.tank, aitank);
           //console.log(axis);
 
-          console.log(axis);
+          //console.log(axis);
 
-          if (axis) {
-            this.tank.noUpdate = 1;
-            if (
-              (aitank.axis === "-Y" && axis === "v") ||
-              (aitank.axis === "+Y" && axis === "^") ||
-              (aitank.axis === "+X" && axis === "<") ||
-              (aitank.axis === "-X" && axis === ">")
-            )
-              aitank.noUpdate = 1;
-            //return true;
-          }
+          if (this.axisOfCollision(this.tank, aitank)) this.tank.noUpdate = 1;
+          if (this.axisOfCollision(aitank, this.tank)) aitank.noUpdate = 1;
         }
       });
     }

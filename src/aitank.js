@@ -96,7 +96,7 @@ export default class AITank {
   }
 
   lifeEnd() {
-    this.life = 0;
+    if (!this.game.trainingMode) this.life = 0;
   }
 
   drawTankIndex(ctx) {

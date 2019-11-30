@@ -32,6 +32,8 @@ export default class Game {
     this.livesCounter = "Lives: 10";
     this.blockSize = 40;
 
+    this.trainingMode = 1;
+
     this.terrain = new Terrain(this);
     this.terrain.buildWalls();
 
@@ -88,7 +90,10 @@ export default class Game {
   }
 
   loseLife() {
-    this.lives -= 1;
+    if (!this.trainingMode) {
+      this.lives -= 1;
+      this.tank.respawn();
+    }
     if (this.lives < 1) this.gamestate = GAMESTATE.GAMEOVER;
   }
 

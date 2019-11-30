@@ -9,11 +9,20 @@ export default class AI {
     this.game = game;
     this.steps = [];
     this.action = null;
-    this.actions = ["U", "D", "L", "R", "1", "-"];
+    this.actions = ["U", "D", "L", "R", "1"];
     this.learningRate = 0.8;
     this.discount = 0.6;
     this.reward = null;
     this.newState = null;
+  }
+
+  initializeAI(adt) {
+    this.tanks.forEach(tank => {
+      setInterval(() => {
+        //this.randomAction(tank);
+        this.qlogic(tank);
+      }, adt);
+    });
   }
 
   fillQtable() {
@@ -51,14 +60,39 @@ export default class AI {
     let arr1 = this.positionToIndex(currState[0]);
     let arr2 = this.positionToIndex(currState[1]);
 
-    let tank = arr1[1] * 20 + arr1[0];
-    let bot = arr2[1] * 20 + arr2[0];
+    let tank = (arr1[1] * this.game.gameWidth) / this.game.blockSize + arr1[0];
+    let bot = (arr2[1] * this.game.gameHeight) / this.game.blockSize + arr2[0];
 
-    console.log(tank, bot, arr1, arr2);
+    //console.log(tank, bot, arr1, arr2);
 
     let qArray = this.qTable[tank][bot];
     let qValue = Math.max(...qArray);
     return [qValue, qArray.indexOf(qValue)];
+  }
+
+  qlogic(aitank) {
+    if (this.game.gamestate === 1) {
+      let currState = this.game.currentState();
+      let currQ = this.getQ(currState);
+      this.action = currQ[1];
+
+      let somedata = step(this.tanks[aitank.index], this.actions[this.action]); ///only for FIRST TANK
+
+      this.reward = somedata[0];
+      this.newState = somedata[1];
+      let maxNextQ = this.getQ(this.newState);
+      let newQ =
+        (1 - this.learningRate) * currQ[0] +
+        this.learningRate * (this.reward + this.discount * maxNextQ);
+      let arr1 = this.positionToIndex(currState[0]);
+      let arr2 = this.positionToIndex(currState[aitank.index + 1]);
+      let tank =
+        (arr1[1] * this.game.gameWidth) / this.game.blockSize + arr1[0];
+      let bot =
+        (arr2[1] * this.game.gameHeight) / this.game.blockSize + arr2[0];
+
+      this.qTable[tank][bot][this.action] = newQ;
+    }
   }
 
   randomAction(tank) {
@@ -69,39 +103,11 @@ export default class AI {
     step(tank, this.actions[this.action]);
   }
 
-  initializeAI(adt) {
-    this.tanks.forEach(tank => {
-      setInterval(() => {
-        //this.randomAction(tank);
-        this.qlogic();
-      }, adt);
-    });
-  }
-
-  qlogic() {
-    if (this.game.gamestate === 1) {
-      let currState = this.game.currentState();
-      let currQ = this.getQ(currState);
-      this.action = currQ[1];
-      let somedata = step(this.tanks[0], this.actions[this.action]); ///only for FIRST TANK
-      this.reward = somedata[0];
-      this.newState = somedata[1];
-      let maxNextQ = this.getQ(this.newState);
-      let newQ =
-        (1 - this.learningRate) * currQ[0] +
-        this.learningRate * (this.reward + this.discount * maxNextQ);
-      let arr1 = this.positionToIndex(currState[0]);
-      let arr2 = this.positionToIndex(currState[1]);
-
-      this.qTable[arr1[1] * 20 + arr1[0]][arr2[1] * 20 + arr2[0]][
-        this.action
-      ] = newQ;
-    }
-  }
-
   buildOpponents() {
+    this.clear();
+
     this.tanks.push(new AITank(this.game, 385, 30));
-    // this.tanks.push(new AITank(this.game, 100, 400));
+    this.tanks.push(new AITank(this.game, 100, 400));
     // this.tanks.push(new AITank(this.game, 200, 40));
     // this.tanks.push(new AITank(this.game, 150, 400));
     // this.tanks.push(new AITank(this.game, 500, 550));

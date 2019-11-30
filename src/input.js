@@ -40,8 +40,12 @@ export default class InputHandler {
           game.start();
           break;
 
-        case 48:
-          console.log(game.currentState());
+        case 45:
+          if (game.trainingMode) game.terrain.buildWalls();
+          break;
+
+        case 46:
+          if (game.trainingMode) game.terrain.clear();
           break;
       }
     });

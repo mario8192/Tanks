@@ -1,4 +1,5 @@
 import { detectCollision } from "./collisionDetection.js";
+import { calculateReward } from "./calculateReward.js";
 
 export default class Collision {
   constructor(game) {
@@ -74,6 +75,10 @@ export default class Collision {
   }
 
   update() {
+    this.game.ai.tanks.forEach(bot => {
+      calculateReward(bot);
+    });
+
     //aitank + boundary
     this.ai.tanks.forEach(aitank => {
       if (aitank.position.x < 0) aitank.position.x = 0;
@@ -201,16 +206,18 @@ export default class Collision {
     this.ai.tanks.forEach(aitank => {
       this.ai.tanks.forEach(aitank2 => {
         if (aitank !== aitank2 && detectCollision(aitank, aitank2)) {
-          let axis = this.axisOfCollision(aitank, aitank2);
-          if (
-            (axis === "^" && aitank.axis === "-Y") ||
-            (axis === ">" && aitank.axis === "+X") ||
-            (axis === "v" && aitank.axis === "+Y") ||
-            (axis === "<" && aitank.axis === "-X")
-          ) {
-            aitank.noUpdate = 1;
-            aitank2.noUpdate = 1;
-          }
+          // let axis = this.axisOfCollision(aitank, aitank2);
+          // if (
+          //   (axis === "^" && aitank.axis === "-Y") ||
+          //   (axis === ">" && aitank.axis === "+X") ||
+          //   (axis === "v" && aitank.axis === "+Y") ||
+          //   (axis === "<" && aitank.axis === "-X")
+          // ) {
+          //   aitank.noUpdate = 1;
+          //   aitank2.noUpdate = 1;
+          // }
+          if (this.axisOfCollision(aitank, aitank2)) aitank.noUpdate = 1;
+          if (this.axisOfCollision(aitank2, aitank)) aitank2.noUpdate = 1;
         }
       });
     });

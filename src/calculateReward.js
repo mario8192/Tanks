@@ -1,5 +1,5 @@
-////   TO BE TREATED AS BLACK BOX  ---v
 export function calculateReward(bot) {
+  ////   TO BE TREATED AS BLACK BOX  ---v
   //calculating reward
 
   //initial reward 0 if survived
@@ -7,92 +7,104 @@ export function calculateReward(bot) {
 
   //fire + aitank  -->  reward = -1
   bot.game.tank.fires.forEach(fire => {
-    if (
-      bot.position.x <= fire.position.x &&
-      fire.position.x <= bot.position.x + bot.width
-    ) {
-      if (
-        (fire.axis === "+Y" && fire.position.y <= bot.position.y) ||
-        (fire.axis === "-Y" && fire.position.y >= bot.position.y + bot.height)
-      ) {
-        reward = -1;
-        return reward;
-      }
-    }
+    //console.log(fire.position, bot.position);
 
-    if (
-      bot.position.y <= fire.position.y &&
-      fire.position.y <= bot.position.y + bot.height
-    ) {
+    if (fire.axis === "+Y" || fire.axis === "-Y")
       if (
-        (fire.axis === "+X" && fire.position.x <= bot.position.x) ||
-        (fire.axis === "-X" && fire.position.x >= bot.position.x + bot.width)
+        bot.position.x <= fire.position.x &&
+        fire.position.x <= bot.position.x + bot.width
       ) {
-        reward = -1;
-        return reward;
+        if (
+          (fire.axis === "+Y" &&
+            fire.position.y <= bot.position.y + bot.height) ||
+          (fire.axis === "-Y" && fire.position.y >= bot.position.y)
+        ) {
+          reward = -1;
+          return reward;
+        }
       }
-    }
+
+    if (fire.axis === "+X" || fire.axis === "-X")
+      if (
+        bot.position.y <= fire.position.y &&
+        fire.position.y <= bot.position.y + bot.height
+      ) {
+        if (
+          (fire.axis === "+X" &&
+            fire.position.x <= bot.position.x + bot.width) ||
+          (fire.axis === "-X" && fire.position.x >= bot.position.x)
+        ) {
+          reward = -1;
+          return reward;
+        }
+      }
   });
 
   //aifire + tank  -->  reward = 1
 
   bot.fires.forEach(fire => {
-    if (
-      bot.game.tank.position.x <= fire.position.x &&
-      fire.position.x <= bot.game.tank.position.x + bot.game.tank.width
-    )
+    if (fire.axis === "+Y" || fire.axis === "-Y")
       if (
-        (fire.axis === "+Y" && fire.position.y <= bot.game.tank.position.y) ||
-        (fire.axis === "-Y" &&
-          fire.position.y >= bot.game.tank.position.y + bot.game.tank.height)
-      ) {
-        reward = 1;
-        return reward;
-      }
+        bot.game.tank.position.x <= fire.position.x &&
+        fire.position.x <= bot.game.tank.position.x + bot.game.tank.width
+      )
+        if (
+          (fire.axis === "+Y" &&
+            fire.position.y <=
+              bot.game.tank.position.y + bot.game.tank.height) ||
+          (fire.axis === "-Y" && fire.position.y >= bot.game.tank.position.y)
+        ) {
+          reward = 1;
+          return reward;
+        }
 
-    if (
-      bot.game.tank.position.y <= fire.position.y &&
-      fire.position.y <= bot.game.tank.position.y + bot.game.tank.height
-    )
+    if (fire.axis === "+X" || fire.axis === "-X")
       if (
-        (fire.axis === "+X" && fire.position.x <= bot.game.tank.position.x) ||
-        (fire.axis === "-X" &&
-          fire.position.x >= bot.game.tank.position.x + bot.game.tank.height)
-      ) {
-        reward = 1;
-        return reward;
-      }
+        bot.game.tank.position.y <= fire.position.y &&
+        fire.position.y <= bot.game.tank.position.y + bot.game.tank.height
+      )
+        if (
+          (fire.axis === "+X" &&
+            fire.position.x <=
+              bot.game.tank.position.x + bot.game.tank.height) ||
+          (fire.axis === "-X" && fire.position.x >= bot.game.tank.position.x)
+        ) {
+          reward = 1;
+          return reward;
+        }
   });
 
   //aifire + aitank  -->  reward = 1
   bot.fires.forEach(fire => {
     bot.game.ai.tanks.forEach(aitank2 => {
       if (aitank2 !== bot) {
-        if (
-          aitank2.position.x <= fire.position.x &&
-          fire.position.x <= aitank2.position.x + aitank2.width
-        )
+        if (fire.axis === "+Y" || fire.axis === "-Y")
           if (
-            (fire.axis === "+Y" && fire.position.y <= aitank2.position.y) ||
-            (fire.axis === "-Y" &&
-              fire.position.y >= aitank2.position.y + aitank2.height)
-          ) {
-            reward = 1;
-            return reward;
-          }
+            aitank2.position.x <= fire.position.x &&
+            fire.position.x <= aitank2.position.x + aitank2.width
+          )
+            if (
+              (fire.axis === "+Y" &&
+                fire.position.y <= aitank2.position.y + aitank2.height) ||
+              (fire.axis === "-Y" && fire.position.y >= aitank2.position.y)
+            ) {
+              reward = 1;
+              return reward;
+            }
 
-        if (
-          aitank2.position.y <= fire.position.y &&
-          fire.position.y <= aitank2.position.y + aitank2.height
-        )
+        if (fire.axis === "+X" || fire.axis === "-X")
           if (
-            (fire.axis === "+X" && fire.position.x <= aitank2.position.x) ||
-            (fire.axis === "-X" &&
-              fire.position.x >= aitank2.position.x + aitank2.width)
-          ) {
-            reward = 1;
-            return reward;
-          }
+            aitank2.position.y <= fire.position.y &&
+            fire.position.y <= aitank2.position.y + aitank2.height
+          )
+            if (
+              (fire.axis === "+X" &&
+                fire.position.x <= aitank2.position.x + aitank2.width) ||
+              (fire.axis === "-X" && fire.position.x >= aitank2.position.x)
+            ) {
+              reward = 1;
+              return reward;
+            }
       }
     });
   });

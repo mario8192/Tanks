@@ -68,17 +68,17 @@ export default class Game {
 
     this.lives = this.maxLives;
     this.tank.respawn();
-    this.terrain.clear();
     this.terrain.buildWalls();
-    this.ai.clear();
     this.ai.buildOpponents();
+    this.setFireLimit(200);
+    this.gamestate = GAMESTATE.RUNNING;
+
     this.ai.fillQtable();
     this.ai.initializeAI(400);
+
     //this.ai.buildSteps();
     //this.execAIroutine(250);
     //this.execSteps(400);
-    this.setFireLimit(200);
-    this.gamestate = GAMESTATE.RUNNING;
   }
 
   loseLife() {

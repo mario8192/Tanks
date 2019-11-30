@@ -1,5 +1,8 @@
+import { calculateReward } from "./calculateReward.js";
+
 export default class Fire {
   constructor(tank) {
+    this.game = tank.game;
     this.screenX = tank.game.gameWidth;
     this.screenY = tank.game.gameHeight;
 
@@ -13,7 +16,7 @@ export default class Fire {
 
     this.life = 1;
 
-    this.vel = 2;
+    this.vel = 5;
     this.axis = tank.axis;
   }
 
@@ -25,11 +28,19 @@ export default class Fire {
 
   update(deltatime) {
     if (!this.life) return;
-    if (this.axis === "+X") this.position.x += this.vel * 5;
-    if (this.axis === "-X") this.position.x -= this.vel * 5;
-    if (this.axis === "+Y") this.position.y += this.vel * 5;
-    if (this.axis === "-Y") this.position.y -= this.vel * 5;
 
+    let count = this.vel;
+    while (count) {
+      if (this.axis === "+X") this.position.x += 1;
+      if (this.axis === "-X") this.position.x -= 1;
+      if (this.axis === "+Y") this.position.y += 1;
+      if (this.axis === "-Y") this.position.y -= 1;
+
+      this.game.ai.tanks.forEach(bot => {
+        calculateReward(bot);
+      });
+      count -= 1;
+    }
     //clear fire from mem if it goes offscreen
     this.clearFromMem();
   }

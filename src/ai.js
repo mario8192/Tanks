@@ -50,9 +50,14 @@ export default class AI {
   getQ(currState) {
     let arr1 = this.positionToIndex(currState[0]);
     let arr2 = this.positionToIndex(currState[1]);
-    let qArray = this.qTable[arr1[0] * 20 + arr1[1]][arr2[0] * 20 + arr2[1]];
+
+    let tank = arr1[1] * 20 + arr1[0];
+    let bot = arr2[1] * 20 + arr2[0];
+
+    console.log(tank, bot, arr1, arr2);
+
+    let qArray = this.qTable[tank][bot];
     let qValue = Math.max(...qArray);
-    //let indexOfQ = qArray.indexOf(qValue);
     return [qValue, qArray.indexOf(qValue)];
   }
 
@@ -87,7 +92,8 @@ export default class AI {
         this.learningRate * (this.reward + this.discount * maxNextQ);
       let arr1 = this.positionToIndex(currState[0]);
       let arr2 = this.positionToIndex(currState[1]);
-      this.qTable[arr1[0] * 20 + arr1[1]][arr2[0] * 20 + arr2[1]][
+
+      this.qTable[arr1[1] * 20 + arr1[0]][arr2[1] * 20 + arr2[0]][
         this.action
       ] = newQ;
     }

@@ -223,6 +223,11 @@ export default class Game {
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.fillText(this.livesCounter, this.gameWidth - 50, 30);
+
+    ctx.font = "13px Arial";
+    ctx.fillStyle = "#00ff00";
+    ctx.textAlign = "left";
+    if (this.trainingMode) ctx.fillText("TRAINING MODE", 10, 20);
   }
 
   togglePause() {

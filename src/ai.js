@@ -9,7 +9,7 @@ export default class AI {
     this.game = game;
     this.steps = [];
     this.action = null;
-    this.actions = ["U", "D", "R", "L", "1"];
+    this.actions = ["U", "D", "L", "R", "-"];
     this.learningRate = 0.8;
     this.discount = 0.6;
     this.reward = null;
@@ -22,13 +22,11 @@ export default class AI {
         let subQtable = [];
         for (let i = 0; i < 16; i++) {
           for (let j = 0; j < 20; j++) {
-            subQtable.push([
-              Math.random(),
-              Math.random(),
-              Math.random(),
-              Math.random(),
-              Math.random()
-            ]);
+            let actionsQvalues = [];
+            this.actions.forEach(action => {
+              actionsQvalues.push(Math.random());
+            });
+            subQtable.push(actionsQvalues);
           }
         }
         this.qTable.push(subQtable);
@@ -60,7 +58,7 @@ export default class AI {
 
   randomAction(tank) {
     if (this.game.gamestate === 1)
-      this.action = this.actions[Math.floor(Math.random() * 5)];
+      this.action = Math.floor(Math.random() * this.actions.length);
     else this.action = "pause";
     //console.log(this.action);
     step(tank, this.actions[this.action]);
@@ -69,6 +67,7 @@ export default class AI {
   initializeAI(adt) {
     this.tanks.forEach(tank => {
       setInterval(() => {
+        //this.randomAction(tank);
         this.qlogic();
       }, adt);
     });
@@ -92,6 +91,21 @@ export default class AI {
         this.action
       ] = newQ;
     }
+  }
+
+  buildOpponents() {
+    this.tanks.push(new AITank(this.game, 385, 30));
+    // this.tanks.push(new AITank(this.game, 100, 400));
+    // this.tanks.push(new AITank(this.game, 200, 40));
+    // this.tanks.push(new AITank(this.game, 150, 400));
+    // this.tanks.push(new AITank(this.game, 500, 550));
+    // this.tanks.push(new AITank(this.game, 700, 500));
+    // this.tanks.push(new AITank(this.game, 650, 700));
+    //console.log(this.tanks);
+
+    initConsole(this);
+
+    this.setTankIndexes();
   }
 
   buildSteps() {
@@ -118,21 +132,6 @@ export default class AI {
     this.tanks.forEach(tank => {
       tank.index = this.tanks.indexOf(tank);
     });
-  }
-
-  buildOpponents() {
-    this.tanks.push(new AITank(this.game, 385, 30));
-    //this.tanks.push(new AITank(this.game, 100, 400));
-    //this.tanks.push(new AITank(this.game, 200, 60));
-    //this.tanks.push(new AITank(this.game, 150, 400));
-    // this.tanks.push(new AITank(this.game, 500, 550));
-    // this.tanks.push(new AITank(this.game, 700, 500));
-    //this.tanks.push(new AITank(this.game, 650, 700));
-    //console.log(this.tanks);
-
-    initConsole(this);
-
-    this.setTankIndexes();
   }
 
   removeEmpty() {

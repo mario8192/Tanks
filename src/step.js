@@ -22,18 +22,18 @@ export function step(bot, action) {
       bot.moveRight();
       //console.log("R");
     }
-    if (action === "-") {
-      bot.stop();
-      //console.log("-");
-    }
     if (action === "1") {
       bot.shoot();
       //console.log("1");
     }
+    if (action === "-") {
+      bot.stop();
+      //console.log("-");
+    }
 
     bot.reward = calculateReward(bot);
     let array = bot.game.currentState();
-    console.log(bot.reward, array);
+    //console.log(bot.reward, array);
 
     //custom console
     updateConsole(bot, array);

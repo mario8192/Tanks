@@ -82,9 +82,10 @@ export default class Game {
     this.ai.clear();
     this.ai.buildOpponents();
     this.ai.fillQtable();
+    this.ai.initializeAI(400);
     //this.ai.buildSteps();
     //this.execAIroutine(250);
-    this.execSteps(400);
+    //this.execSteps(400);
     this.setFireLimit(200);
     this.gamestate = GAMESTATE.RUNNING;
   }
@@ -102,11 +103,11 @@ export default class Game {
   }
 
   // needs reworking               *no more
-  execSteps(adt) {
-    //this.ai.runSteps(adt);
-    this.ai.initializeAI(adt);
-    //setTimeout(this.ai.routine(), 1000);
-  }
+  // execSteps(adt) {
+  //   //this.ai.runSteps(adt);
+  //   this.ai.initializeAI(adt);
+  //   //setTimeout(this.ai.routine(), 1000);
+  // }
 
   update(deltaTime) {
     if (this.lives === 0) {

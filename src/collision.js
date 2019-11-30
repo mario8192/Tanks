@@ -23,7 +23,7 @@ export default class Collision {
     let tankBottom = tank.position.y + tank.height;
 
     if (tankTop === boxBottom) {
-      if (tank.velY === -1 || box.velY === 1) {
+      if (tank.velY === -1) {
         if (
           (tankRight <= boxRight && tankLeft >= boxLeft) ||
           (tankLeft < boxLeft && tankRight > boxLeft) ||
@@ -33,7 +33,7 @@ export default class Collision {
       } //else return 0;
     }
     if (tankRight === boxLeft) {
-      if (tank.velX === 1 || box.velX === -1) {
+      if (tank.velX === 1) {
         if (
           (tankBottom <= boxBottom && tankTop >= boxTop) ||
           (tankTop < boxTop && tankBottom > boxTop) ||
@@ -43,7 +43,7 @@ export default class Collision {
       } //else return 0;
     }
     if (tankBottom === boxTop) {
-      if (tank.velY === 1 || box.velY === -1) {
+      if (tank.velY === 1) {
         if (
           (tankRight <= boxRight && tankLeft >= boxLeft) ||
           (tankLeft < boxLeft && tankRight > boxLeft) ||
@@ -53,7 +53,7 @@ export default class Collision {
       } // else return 0;
     }
     if (tankLeft === boxRight) {
-      if (tank.velX === -1 || box.velY === 1) {
+      if (tank.velX === -1) {
         if (
           (tankBottom <= boxBottom && tankTop >= boxTop) ||
           (tankTop < boxTop && tankBottom > boxTop) ||
@@ -110,9 +110,17 @@ export default class Collision {
           let axis = this.axisOfCollision(this.tank, aitank);
           //console.log(axis);
 
-          if (axis === "^" || axis === ">" || axis === "v" || axis === "<") {
+          console.log(axis);
+
+          if (axis) {
             this.tank.noUpdate = 1;
-            aitank.noUpdate = 1;
+            if (
+              (aitank.axis === "-Y" && axis === "v") ||
+              (aitank.axis === "+Y" && axis === "^") ||
+              (aitank.axis === "+X" && axis === "<") ||
+              (aitank.axis === "-X" && axis === ">")
+            )
+              aitank.noUpdate = 1;
             //return true;
           }
         }

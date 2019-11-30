@@ -62,7 +62,7 @@ export default class AI {
       this.action = this.actions[Math.floor(Math.random() * 5)];
     else this.action = "pause";
     //console.log(this.action);
-    step(tank, this.action);
+    step(tank, this.actions[this.action]);
   }
 
   initializeAI(adt) {
@@ -77,7 +77,7 @@ export default class AI {
     let currState = this.game.currentState();
     let currQ = this.getQ(currState);
     this.action = currQ[1];
-    let somedata = step(this.tanks[0], this.action); ///only for FIRST TANK
+    let somedata = step(this.tanks[0], this.actions[this.action]); ///only for FIRST TANK
     this.reward = somedata[0];
     this.newState = somedata[1];
     let maxNextQ = this.getQ(this.newState);

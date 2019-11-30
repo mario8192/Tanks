@@ -35,7 +35,7 @@ export default class AITank {
     //state vars
     //this.state = null;
     this.reward = null;
-    this.index = game.ai.tanks.indexOf(this);
+    this.index = null;
   }
 
   moveLeft() {
@@ -99,6 +99,17 @@ export default class AITank {
     this.life = 0;
   }
 
+  drawTankIndex(ctx) {
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      this.index,
+      this.position.x + this.width / 2,
+      this.position.y + this.height / 2 + 5
+    );
+  }
+
   drawMuzzle(ctx) {
     ctx.fillStyle = "#9f9f9f";
     if (this.axis === "+X")
@@ -140,6 +151,7 @@ export default class AITank {
         this.fires.forEach(fire => {
           fire.draw(ctx);
         });
+      this.drawTankIndex(ctx);
     }
   }
 

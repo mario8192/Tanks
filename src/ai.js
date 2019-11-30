@@ -47,10 +47,16 @@ export default class AI {
     if (this.tanks !== undefined) this.tanks.splice(0, this.tanks.length);
   }
 
+  setTankIndexes() {
+    this.tanks.forEach(tank => {
+      tank.index = this.tanks.indexOf(tank);
+    });
+  }
+
   buildOpponents() {
     this.tanks.push(new AITank(this.game, 385, 30));
     this.tanks.push(new AITank(this.game, 100, 400));
-    this.tanks.push(new AITank(this.game, 200, 60));
+    this.tanks.push(new AITank(this.game, 200, 40));
     this.tanks.push(new AITank(this.game, 150, 400));
     this.tanks.push(new AITank(this.game, 500, 550));
     this.tanks.push(new AITank(this.game, 700, 500));
@@ -58,6 +64,8 @@ export default class AI {
     //console.log(this.tanks);
 
     initConsole(this);
+
+    this.setTankIndexes();
   }
 
   removeEmpty() {

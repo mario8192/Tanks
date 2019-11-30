@@ -27,8 +27,9 @@ export default class Game {
     this.gameHeight = gameHeight;
     this.gamestate = GAMESTATE.MENU;
 
-    this.lives = 3;
-    this.livesCounter = "Lives: 3";
+    this.maxLives = 10;
+    this.lives = 10;
+    this.livesCounter = "Lives: 10";
     this.blockSize = 40;
 
     this.terrain = new Terrain(this);
@@ -81,7 +82,7 @@ export default class Game {
     )
       return;
 
-    this.lives = 3;
+    this.lives = this.maxLives;
     this.tank.respawn();
     this.terrain.clear();
     this.terrain.buildWalls();
@@ -89,7 +90,7 @@ export default class Game {
     this.ai.buildOpponents();
     //this.ai.buildSteps();
     //this.execAIroutine(250);
-    this.execSteps(250);
+    this.execSteps(400);
     this.setFireLimit(200);
     this.gamestate = GAMESTATE.RUNNING;
   }

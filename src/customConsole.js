@@ -1,5 +1,8 @@
 export function initConsole(ai) {
   $(document.getElementById("console")).empty();
+
+  $(document.getElementById("console")).append('<p id ="line-def" />');
+
   let i = 1;
   ai.tanks.forEach(tank => {
     $(document.getElementById("console")).append(() => {
@@ -10,11 +13,24 @@ export function initConsole(ai) {
 }
 
 export function updateConsole(bot, array) {
-  let i = 1;
-  let id = "line-" + i;
+  let i = 0;
+  let id = "line-def";
   let ref = document.getElementById(id);
+
+  ref.innerHTML =
+    "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0" +
+    array[i];
+  i += 1;
+  id = "line-" + i;
+  ref = document.getElementById(id);
+
   bot.game.ai.tanks.forEach(elem => {
-    ref.innerHTML = elem.reward + "   " + array[i];
+    ref.innerHTML =
+      elem.index +
+      "\u00A0 ---- \u00A0" +
+      elem.reward +
+      "\u00A0\u00A0\u00A0" +
+      array[i];
     if (elem.reward === 0) ref.style.color = "white";
     if (elem.reward === 1) ref.style.color = "cyan";
     if (elem.reward === -1) ref.style.color = "red";

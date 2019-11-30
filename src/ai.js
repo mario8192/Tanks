@@ -75,7 +75,7 @@ export default class AI {
   }
 
   qlogic() {
-    if (this.game.gamestate === 1)  {
+    if (this.game.gamestate === 1) {
       let currState = this.game.currentState();
       let currQ = this.getQ(currState);
       this.action = currQ[1];
@@ -88,7 +88,9 @@ export default class AI {
         this.learningRate * (this.reward + this.discount * maxNextQ);
       let arr1 = this.positionToIndex(currState[0]);
       let arr2 = this.positionToIndex(currState[1]);
-      this.qTable[arr1[0] * 20 + arr1[1]][arr2[0] * 20 + arr2[1]][this.action] = newQ
+      this.qTable[arr1[0] * 20 + arr1[1]][arr2[0] * 20 + arr2[1]][
+        this.action
+      ] = newQ;
     }
   }
 
@@ -112,6 +114,12 @@ export default class AI {
     if (this.tanks !== undefined) this.tanks.splice(0, this.tanks.length);
   }
 
+  setTankIndexes() {
+    this.tanks.forEach(tank => {
+      tank.index = this.tanks.indexOf(tank);
+    });
+  }
+
   buildOpponents() {
     this.tanks.push(new AITank(this.game, 385, 30));
     //this.tanks.push(new AITank(this.game, 100, 400));
@@ -123,6 +131,8 @@ export default class AI {
     //console.log(this.tanks);
 
     initConsole(this);
+
+    this.setTankIndexes();
   }
 
   removeEmpty() {

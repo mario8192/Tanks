@@ -41,10 +41,16 @@ export default class Game {
     this.tank = new Tank(this);
 
     this.ai = new AI(this);
+<<<<<<< HEAD
 
     this.ai.buildOpponents();
     this.ai.fillQtable();
     this.ai.qlogic();
+=======
+    // this.ai.buildOpponents();
+    // this.ai.fillQtable();
+    // this.ai.qlogic();
+>>>>>>> master
     this.collision = new Collision(this);
     // this.collisionTank = new Collision(this);
     // this.collisionAI = new Collision(this);
@@ -78,6 +84,7 @@ export default class Game {
     this.terrain.buildWalls();
     this.ai.clear();
     this.ai.buildOpponents();
+    this.ai.fillQtable();
     //this.ai.buildSteps();
     //this.execAIroutine(250);
     this.execSteps(400);
@@ -100,7 +107,7 @@ export default class Game {
   // needs reworking               *no more
   execSteps(adt) {
     //this.ai.runSteps(adt);
-    this.ai.initializeRandomAI(adt);
+    this.ai.initializeAI(adt);
     //setTimeout(this.ai.routine(), 1000);
   }
 

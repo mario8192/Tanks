@@ -37,7 +37,7 @@ export function step(bot, action) {
 
     //custom console
     updateConsole(bot, array);
-    //return [this.reward, this.game.currentState()];
+    return [bot.reward, bot.game.currentState()];
   }
 }
 

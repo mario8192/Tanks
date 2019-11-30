@@ -13,6 +13,7 @@ const GAMESTATE = {
   NEWLEVEL: 4,
   WIN: 5
 };
+
 let gameScreenDrawn = {
   PAUSED: false,
   MENU: false,
@@ -21,8 +22,7 @@ let gameScreenDrawn = {
 };
 
 export default class Game {
-  constructor(gameWidth, gameHeight, bricksPerRow) {
-    this.qtable = [];
+  constructor(gameWidth, gameHeight) {
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.gamestate = GAMESTATE.MENU;
@@ -37,19 +37,11 @@ export default class Game {
     this.terrain = new Terrain(this);
     this.terrain.buildWalls();
 
-    //this.ai.buildRoutines();
-    //console.log("this in game.js is", this);
-
     this.tank = new Tank(this);
 
     this.ai = new AI(this);
 
-    // this.ai.buildOpponents();
-    // this.ai.fillQtable();
-    // this.ai.qlogic();
     this.collision = new Collision(this);
-    // this.collisionTank = new Collision(this);
-    // this.collisionAI = new Collision(this);
 
     new InputHandler(this.tank, this);
   }
@@ -117,23 +109,14 @@ export default class Game {
       return;
     }
 
-    // if (
-    //   this.gamestate === GAMESTATE.PAUSED ||
-    //   this.gamestate === GAMESTATE.MENU ||
-    //   this.gamestate === GAMESTATE.GAMEOVER ||
-    //   this.gamestate === GAMESTATE.WIN
-    // )
-    //   return;
     if (this.gamestate === GAMESTATE.RUNNING) {
       //collision logic goes here
       this.collision.check();
 
       this.ai.removeEmpty();
       this.ai.update(deltaTime);
-      //this.collision.update(deltaTime);
-      this.tank.update(deltaTime);
 
-      //console.log(this.ai.tanks[2].noUpdate, this.ai.tanks[2].axis);
+      this.tank.update(deltaTime);
 
       gameScreenDrawn = {
         PAUSED: false,

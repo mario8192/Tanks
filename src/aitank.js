@@ -19,61 +19,41 @@ export default class AITank {
     this.life = 1;
 
     this.position = {
-      // x: game.gameWidth / 2 - this.width / 2,
-      // y: game.gameHeight / 2 + 200
       x: x,
       y: y
     };
 
     this.terrain = game.terrain;
     this.fires = [];
+    this.noUpdate = 0;
+    this.index = game.ai.tanks.indexOf(this);
 
     this.steps = [];
-
-    this.noUpdate = 0;
 
     //state vars
     this.action = null;
     this.reward = null;
-    this.index = game.ai.tanks.indexOf(this);
   }
 
   moveLeft() {
-    // if (!this.velY && this.velX !== 1) {
-    //   this.velX = -1;
-    //   this.axis = "-X";
-    // }
-
     this.velX = -1;
     this.velY = 0;
     this.axis = "-X";
   }
 
   moveRight() {
-    // if (!this.velY && this.velX !== -1) {
-    //   this.velX = 1;
-    //   this.axis = "+X";
-    // }
     this.velX = 1;
     this.velY = 0;
     this.axis = "+X";
   }
 
   moveUp() {
-    // if (!this.velX && this.velY !== 1) {
-    //   this.velY = -1;
-    //   this.axis = "-Y";
-    // }
     this.velX = 0;
     this.velY = -1;
     this.axis = "-Y";
   }
 
   moveDown() {
-    // if (!this.velX && this.velY !== -1) {
-    //   this.velY = 1;
-    //   this.axis = "+Y";
-    // }
     this.velX = 0;
     this.velY = 1;
     this.axis = "+Y";
@@ -159,9 +139,6 @@ export default class AITank {
     if (this.noUpdate) {
       this.noUpdate = 0;
     } else {
-      // this.position.x += this.velX * this.maxSpeed;
-      // this.position.y += this.velY * this.maxSpeed;
-
       let count = this.maxSpeed;
       while (count) {
         if (!this.noUpdate) {
@@ -177,25 +154,13 @@ export default class AITank {
   }
 
   update(deltaTime) {
-    //console.log("noupdate is ", this.noUpdate);
-    // if (this.noUpdate) {
-    //   this.noUpdate = 0;
-    // } else {
-    //   this.position.x += this.velX * this.maxSpeed;
-    //   this.position.y += this.velY * this.maxSpeed;
-    // }
-
+    //tank + boundary
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.y < 0) this.position.y = 0;
     if (this.position.x + this.width > this.gameWidth)
       this.position.x = this.gameWidth - this.width;
     if (this.position.y + this.height > this.gameHeight)
       this.position.y = this.gameHeight - this.height;
-
-    // if (this.wall !== undefined && detectCollision(this, this.wall) === true) {
-    //   this.position.x -= this.velX * 5;
-    //   this.position.y -= this.velY * 5;
-    // }
 
     this.updatePosition();
 
@@ -208,7 +173,5 @@ export default class AITank {
         this.fires.splice(this.fires.indexOf(fire), 1);
       }
     });
-
-    //console.log("wall is ", this.wall);
   }
 }

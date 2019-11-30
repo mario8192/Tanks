@@ -74,18 +74,6 @@ export default class Collision {
   }
 
   update() {
-    // if (detectCollision(this.terrain.walls[0], this.terrain.walls[2]))
-    //   console.log("trueeeeee");
-    // else console.log("falseeeee");
-
-    // //tank + boundary
-    // if (this.tank.position.x < 0) this.tank.position.x = 0;
-    // if (this.tank.position.y < 0) this.tank.position.y = 0;
-    // if (this.tank.position.x + this.tank.width > this.game.gameWidth)
-    //   this.tank.position.x = this.game.gameWidth - this.tank.width;
-    // if (this.tank.position.y + this.tank.height > this.game.gameHeight)
-    //   this.tank.position.y = this.game.gameHeight - this.tank.height;
-
     //aitank + boundary
     this.ai.tanks.forEach(aitank => {
       if (aitank.position.x < 0) aitank.position.x = 0;
@@ -100,18 +88,6 @@ export default class Collision {
     if (this.ai.tanks !== undefined) {
       this.ai.tanks.forEach(aitank => {
         if (detectCollision(this.tank, aitank)) {
-          // this.tank.position.x -= this.tank.velX * 5;
-          // this.tank.position.y -= this.tank.velY * 5;
-
-          // aitank.position.x -= aitank.velX * 5;
-          // aitank.position.y -= aitank.velY * 5;
-
-          //aitank.stop();
-          //let axis = this.axisOfCollision(this.tank, aitank);
-          //console.log(axis);
-
-          //console.log(axis);
-
           if (this.axisOfCollision(this.tank, aitank)) this.tank.noUpdate = 1;
           if (this.axisOfCollision(aitank, this.tank)) aitank.noUpdate = 1;
         }
@@ -119,17 +95,6 @@ export default class Collision {
     }
 
     //tank + wall
-
-    // if (this.walls.walls !== undefined) {
-    //   this.walls.walls.forEach(wall => {
-    //     if (detectCollision(this.tank, wall)) {
-    //       // this.tank.position.x -= this.tank.velX * 1;
-    //       // this.tank.position.y -= this.tank.velY * 1;
-    //       this.tank.stop();
-    //     }
-    //   });
-    // }
-
     if (this.terrain.walls !== undefined) {
       this.terrain.walls.forEach(wall => {
         if (detectCollision(this.tank, wall)) {
@@ -172,17 +137,6 @@ export default class Collision {
     }
 
     //aitank + wall
-    // if (this.terrain.walls !== undefined) {
-    //   this.terrain.walls.forEach(wall => {
-    //     this.ai.tanks.forEach(aitank => {
-    //       if (detectCollision(aitank, wall)) {
-    //         aitank.position.x -= aitank.velX * 5;
-    //         aitank.position.y -= aitank.velY * 5;
-    //       }
-    //     });
-    //   });
-    // }
-
     if (this.ai.tanks) {
       this.ai.tanks.forEach(aitank => {
         if (this.terrain.walls) {
@@ -196,19 +150,7 @@ export default class Collision {
                 (axis === "v" && aitank.axis === "+Y") ||
                 (axis === "<" && aitank.axis === "-X")
               ) {
-                //if (axis === 0) console.log(axis);
-
-                //aitank.stop();
-
-                // if (
-                //   (axis === 1 && aitank.velY === -1) ||
-                //   (axis === 2 && aitank.velX === 1) ||
-                //   (axis === 3 && aitank.velY === 1) ||
-                //   (axis === 4 && aitank.velX === -1)
-                // ) {
                 aitank.noUpdate = 1;
-                //console.log(aitank.noUpdate);
-                //return true;
               }
             }
           });
@@ -272,9 +214,5 @@ export default class Collision {
         }
       });
     });
-
-    // this.game.tank.updatePosition();
-    // this.game.ai.tanks.forEach(aitank => aitank.updatePosition());
-    //console.log(this.ai.tanks[2].noUpdate, this.ai.tanks[2].axis);
   }
 }

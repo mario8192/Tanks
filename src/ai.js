@@ -13,7 +13,7 @@ export default class AI {
     this.learningRate = 0.8;
     this.discount = 0.6;
     this.reward = null;
-    this.newstate = null;
+    this.newState = null;
   }
 
   fillQtable() {

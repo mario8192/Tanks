@@ -36,25 +36,21 @@ export default class Tank {
   }
 
   moveLeft() {
-    //if (!this.velY && this.velX !== 1) {
     this.velX = -1;
     this.axis = "-X";
   }
 
   moveRight() {
-    //if (!this.velY && this.velX !== -1) {
     this.velX = 1;
     this.axis = "+X";
   }
 
   moveUp() {
-    //if (!this.velX && this.velY !== 1) {
     this.velY = -1;
     this.axis = "-Y";
   }
 
   moveDown() {
-    //if (!this.velX && this.velY !== -1) {
     this.velY = 1;
     this.axis = "+Y";
   }
@@ -143,9 +139,6 @@ export default class Tank {
     if (this.noUpdate) {
       this.noUpdate = 0;
     } else {
-      // this.position.x += this.velX * this.maxSpeed;
-      // this.position.y += this.velY * this.maxSpeed;
-
       let count = this.maxSpeed;
       while (count) {
         if (!this.noUpdate) {
@@ -162,15 +155,6 @@ export default class Tank {
   }
 
   update(deltaTime) {
-    //console.log("noupdate is ", this.noUpdate);
-
-    // if (this.noUpdate) {
-    //   this.noUpdate = 0;
-    // } else {
-    //   this.position.x += this.velX * this.maxSpeed;
-    //   this.position.y += this.velY * this.maxSpeed;
-    // }
-
     //tank + boundary
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.y < 0) this.position.y = 0;
@@ -178,13 +162,6 @@ export default class Tank {
       this.position.x = this.game.gameWidth - this.width;
     if (this.position.y + this.height > this.game.gameHeight)
       this.position.y = this.game.gameHeight - this.height;
-
-    // if (this.position.x < 0) this.position.x = 0;
-    // if (this.position.y < 0) this.position.y = 0;
-    // if (this.position.x + this.width > this.gameWidth)
-    //   this.position.x = this.gameWidth - this.width;
-    // if (this.position.y + this.height > this.gameHeight)
-    //   this.position.y = this.gameHeight - this.height;
 
     this.updatePosition();
 
@@ -197,7 +174,5 @@ export default class Tank {
         this.fires.splice(this.fires.indexOf(fire), 1);
       }
     });
-
-    //console.log("wall is ", this.wall);
   }
 }

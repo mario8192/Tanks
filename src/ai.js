@@ -82,7 +82,7 @@ export default class AI {
     this.newState = somedata[1];
     let maxNextQ = this.getQ(this.newState);
     let newQ =
-      (1 - this.learningRate) * currQ +
+      (1 - this.learningRate) * currQ[0] +
       this.learningRate * (this.reward + this.discount * maxNextQ);
     let arr1 = this.positionToIndex(currState[0]);
     let arr2 = this.positionToIndex(currState[1]);

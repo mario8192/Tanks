@@ -1,5 +1,6 @@
 import Fire from "./fire.js";
 import { calculateReward } from "./calculateReward.js";
+import { gridCoordinateOf } from "./positionToIndex.js";
 
 export default class AITank {
   constructor(game, x, y) {
@@ -36,8 +37,8 @@ export default class AITank {
     this.action = null;
     this.reward = null;
 
-    this.xOffsetFromTank = Math.abs(game.tank.position.x - x);
-    this.yOffsetFromTank = Math.abs(game.tank.position.y - y);
+    this.xOffsetFromTank = Math.abs(x - game.tank.position.x);
+    this.yOffsetFromTank = Math.abs(y - game.tank.position.y);
     this.oldxOffset = null;
     this.oldyOffset = null;
   }
@@ -162,10 +163,10 @@ export default class AITank {
       this.oldxOffset = this.xOffsetFromTank;
       this.oldyOffset = this.yOffsetFromTank;
       this.xOffsetFromTank = Math.abs(
-        this.game.tank.position.x - this.position.x
+        this.position.x - this.game.tank.position.x
       );
       this.yOffsetFromTank = Math.abs(
-        this.game.tank.position.y - this.position.y
+        this.position.y - this.game.tank.position.y
       );
     }
   }

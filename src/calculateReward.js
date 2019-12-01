@@ -7,24 +7,61 @@ export function calculateReward(bot) {
 
   //aitank towards tank --> reward = 1
   if (
-    // (bot.game.tank.position.x <= bot.position.x + bot.width / 2 &&
-    //   bot.position.x + bot.width / 2 <=
-    //     bot.game.tank.position.x + bot.game.tank.width) ||
-    // (bot.game.tank.position.y <= bot.position.y + bot.height / 2 &&
-    //   bot.position.y + bot.height / 2 <=
-    //     bot.game.tank.position.y + bot.game.tank.height)
-    bot.oldxOffset > bot.xOffsetFromTank ||
-    bot.oldyOffset > bot.yOffsetFromTank
+    bot.oldxOffset - bot.xOffsetFromTank < 0 &&
+    bot.oldyOffset - bot.yOffsetFromTank < 0
   ) {
     // console.log(
     //   [bot.oldxOffset, bot.xOffsetFromTank],
     //   [bot.oldyOffset, bot.yOffsetFromTank]
     // );
-    reward = 0.5;
-    //return reward;
-  } else {
     reward = -0.5;
   }
+  if (
+    bot.oldxOffset - bot.xOffsetFromTank > 0 ||
+    bot.oldyOffset - bot.yOffsetFromTank > 0
+  ) {
+    // console.log(
+    //   [bot.oldxOffset, bot.xOffsetFromTank],
+    //   [bot.oldyOffset, bot.yOffsetFromTank]
+    // );
+    reward = 0.75;
+    //return reward;
+  }
+
+  //fire + aitank  -->  reward = -1
+  bot.game.tank.fires.forEach(fire => {
+    //console.log(fire.position, bot.position);
+
+    if (fire.axis === "+Y" || fire.axis === "-Y")
+      if (
+        bot.position.x <= fire.position.x &&
+        fire.position.x <= bot.position.x + bot.width
+      ) {
+        if (
+          (fire.axis === "+Y" &&
+            fire.position.y <= bot.position.y + bot.height) ||
+          (fire.axis === "-Y" && fire.position.y >= bot.position.y)
+        ) {
+          reward = -1;
+          //return reward;
+        }
+      }
+
+    if (fire.axis === "+X" || fire.axis === "-X")
+      if (
+        bot.position.y <= fire.position.y &&
+        fire.position.y <= bot.position.y + bot.height
+      ) {
+        if (
+          (fire.axis === "+X" &&
+            fire.position.x <= bot.position.x + bot.width) ||
+          (fire.axis === "-X" && fire.position.x >= bot.position.x)
+        ) {
+          reward = -1;
+          //return reward;
+        }
+      }
+  });
 
   //aifire + tank  -->  reward = 1
   bot.fires.forEach(fire => {
@@ -92,41 +129,6 @@ export function calculateReward(bot) {
             }
       }
     });
-  });
-
-  //fire + aitank  -->  reward = -1
-  bot.game.tank.fires.forEach(fire => {
-    //console.log(fire.position, bot.position);
-
-    if (fire.axis === "+Y" || fire.axis === "-Y")
-      if (
-        bot.position.x <= fire.position.x &&
-        fire.position.x <= bot.position.x + bot.width
-      ) {
-        if (
-          (fire.axis === "+Y" &&
-            fire.position.y <= bot.position.y + bot.height) ||
-          (fire.axis === "-Y" && fire.position.y >= bot.position.y)
-        ) {
-          reward = -1;
-          //return reward;
-        }
-      }
-
-    if (fire.axis === "+X" || fire.axis === "-X")
-      if (
-        bot.position.y <= fire.position.y &&
-        fire.position.y <= bot.position.y + bot.height
-      ) {
-        if (
-          (fire.axis === "+X" &&
-            fire.position.x <= bot.position.x + bot.width) ||
-          (fire.axis === "-X" && fire.position.x >= bot.position.x)
-        ) {
-          reward = -1;
-          //return reward;
-        }
-      }
   });
 
   return reward;

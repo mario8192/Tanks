@@ -34,7 +34,7 @@ export function updateConsole(bot, array) {
     if (elem.reward === 0) ref.style.color = "white";
     if (elem.reward === 1) ref.style.color = "#0f0";
     if (elem.reward === -1) ref.style.color = "red";
-    if (elem.reward === 0.5) ref.style.color = "cyan";
+    if (elem.reward === 0.75) ref.style.color = "cyan";
     if (elem.reward === -0.5) ref.style.color = "yellow";
     i += 1;
     id = "line-" + i;

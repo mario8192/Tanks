@@ -2,6 +2,7 @@ import AITank from "./aitank.js";
 import { step, setSteps, callStepFunction } from "./step.js";
 import { initConsole } from "./customConsole.js";
 import { calculateReward } from "./calculateReward.js";
+import { positionToIndex } from "./positionToIndex.js";
 
 export default class AI {
   constructor(game) {
@@ -46,21 +47,9 @@ export default class AI {
     console.log(this.qTable);
   }
 
-  positionToIndex(positions) {
-    // arr[0] = arr[0] / this.game.blockSize;
-    // arr[1] = arr[1] / this.game.blockSize;
-
-    let indexes = [];
-    positions.forEach(elem => {
-      indexes.push(elem / this.game.blockSize);
-    });
-
-    return indexes;
-  }
-
   getQ(currState) {
-    let arr1 = this.positionToIndex(currState[0]);
-    let arr2 = this.positionToIndex(currState[1]);
+    let arr1 = positionToIndex(currState[0]);
+    let arr2 = positionToIndex(currState[1]);
 
     let tank = (arr1[1] * this.game.gameWidth) / this.game.blockSize + arr1[0];
     let bot = (arr2[1] * this.game.gameHeight) / this.game.blockSize + arr2[0];
@@ -91,8 +80,8 @@ export default class AI {
       let newQ =
         (1 - this.learningRate) * currQ[0] +
         this.learningRate * (this.reward + this.discount * maxNextQ[0]);
-      let arr1 = this.positionToIndex(currState[0]);
-      let arr2 = this.positionToIndex(currState[aitank.index + 1]);
+      let arr1 = positionToIndex(currState[0]);
+      let arr2 = positionToIndex(currState[aitank.index + 1]);
       let tank =
         (arr1[1] * this.game.gameWidth) / this.game.blockSize + arr1[0];
       let bot =

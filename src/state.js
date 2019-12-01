@@ -7,8 +7,8 @@ export function state(bot) {
 
   x =
     xdiff < bot.game.blockSize / 2
-      ? (x = bot.position.x - xdiff)
-      : (x = bot.position.x + bot.game.blockSize - xdiff);
+      ? bot.position.x - xdiff
+      : bot.position.x + bot.game.blockSize - xdiff;
 
   y =
     ydiff < bot.game.blockSize / 2

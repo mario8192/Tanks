@@ -34,7 +34,7 @@ export default class Game {
 
     this.trainingMode = 1;
     this.elapsedTime = 0;
-    this.timeInterval = 100;
+    this.timeInterval = 200;
 
     this.terrain = new Terrain(this);
     this.terrain.buildWalls();
@@ -73,7 +73,7 @@ export default class Game {
     this.gamestate = GAMESTATE.RUNNING;
 
     this.ai.fillQtable();
-    this.ai.initializeAI(1);
+    this.ai.initializeAI(200);
 
     //this.ai.buildSteps();
     //this.execAIroutine(250);

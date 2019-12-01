@@ -31,11 +31,11 @@ export function updateConsole(bot, array) {
       elem.reward +
       "\u00A0\u00A0\u00A0" +
       array[i];
-    if (elem.reward === 0) ref.style.color = "white";
-    if (elem.reward === 1) ref.style.color = "#0f0";
-    if (elem.reward === -1) ref.style.color = "red";
-    if (elem.reward === 0.75) ref.style.color = "cyan";
-    if (elem.reward === -0.5) ref.style.color = "yellow";
+    if (elem.reward === bot.game.ai.REWARDS.SURVIVED) ref.style.color = "white";
+    if (elem.reward === bot.game.ai.REWARDS.HIT_TANK) ref.style.color = "#0f0";
+    if (elem.reward === bot.game.ai.REWARDS.GET_HIT) ref.style.color = "red";
+    if (elem.reward === bot.game.ai.REWARDS.CLOSER) ref.style.color = "cyan";
+    if (elem.reward === bot.game.ai.REWARDS.FARTHER) ref.style.color = "yellow";
     i += 1;
     id = "line-" + i;
     ref = document.getElementById(id);

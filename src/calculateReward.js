@@ -3,34 +3,42 @@ export function calculateReward(bot) {
   //calculating reward
 
   //initial reward 0 if survived
-  let reward = 0;
+  let reward = bot.game.ai.REWARDS.SURVIVED;
 
   //aitank towards tank --> reward = 1
   if (
-    bot.oldxOffset - bot.xOffsetFromTank < 0 &&
+    bot.oldxOffset - bot.xOffsetFromTank < 0 ||
     bot.oldyOffset - bot.yOffsetFromTank < 0
+    // Math.sqrt(
+    //   bot.xOffsetFromTank * bot.xOffsetFromTank +
+    //     bot.yOffsetFromTank * bot.yOffsetFromTank
+    // ) >
+    // Math.sqrt(bot.oldxOffset * bot.oldxOffset + bot.oldyOffset * bot.oldyOffset)
   ) {
     // console.log(
     //   [bot.oldxOffset, bot.xOffsetFromTank],
     //   [bot.oldyOffset, bot.yOffsetFromTank]
     // );
-    reward = -0.5;
+    reward = bot.game.ai.REWARDS.FARTHER;
   }
   if (
-    bot.oldxOffset - bot.xOffsetFromTank > 0 ||
-    bot.oldyOffset - bot.yOffsetFromTank > 0
+    Math.sqrt(
+      bot.xOffsetFromTank * bot.xOffsetFromTank +
+        bot.yOffsetFromTank * bot.yOffsetFromTank
+    ) <
+    Math.sqrt(bot.oldxOffset * bot.oldxOffset + bot.oldyOffset * bot.oldyOffset)
   ) {
     // console.log(
     //   [bot.oldxOffset, bot.xOffsetFromTank],
     //   [bot.oldyOffset, bot.yOffsetFromTank]
     // );
-    reward = 0.75;
+    reward = bot.game.ai.REWARDS.CLOSER;
     //return reward;
   }
 
   // aitank drive into wall --> reward = -1
   if (bot.noUpdate) {
-    reward = -1;
+    reward = bot.game.ai.REWARDS.DRIVE_INTO_WALL;
   }
 
   //fire + aitank  -->  reward = -1
@@ -47,7 +55,7 @@ export function calculateReward(bot) {
             fire.position.y <= bot.position.y + bot.height) ||
           (fire.axis === "-Y" && fire.position.y >= bot.position.y)
         ) {
-          reward = -1;
+          reward = bot.game.ai.REWARDS.GET_HIT;
           //return reward;
         }
       }
@@ -62,7 +70,7 @@ export function calculateReward(bot) {
             fire.position.x <= bot.position.x + bot.width) ||
           (fire.axis === "-X" && fire.position.x >= bot.position.x)
         ) {
-          reward = -1;
+          reward = bot.game.ai.REWARDS.GET_HIT;
           //return reward;
         }
       }
@@ -81,7 +89,7 @@ export function calculateReward(bot) {
               bot.game.tank.position.y + bot.game.tank.height) ||
           (fire.axis === "-Y" && fire.position.y >= bot.game.tank.position.y)
         ) {
-          reward = 1;
+          reward = bot.game.ai.REWARDS.HIT_TANK;
           //return reward;
         }
 
@@ -96,9 +104,24 @@ export function calculateReward(bot) {
               bot.game.tank.position.x + bot.game.tank.height) ||
           (fire.axis === "-X" && fire.position.x >= bot.game.tank.position.x)
         ) {
-          reward = 1;
+          reward = bot.game.ai.REWARDS.HIT_TANK;
           //return reward;
         }
+
+    console.log(
+      [fire.position.x, fire.position.y],
+      [bot.game.gameWidth, bot.game.gameHeight]
+    );
+
+    //stop wasting bullets
+    if (
+      fire.position.x > bot.game.gameWidth - bot.game.blockSize ||
+      fire.position.x < bot.game.blockSize ||
+      fire.position.y > bot.game.gameHeight - bot.game.blockSize ||
+      fire.position.y < bot.game.blockSize
+    ) {
+      reward = bot.game.ai.REWARDS.BULLET_WASTED;
+    }
   });
 
   //aifire + aitank  -->  reward = 1
@@ -115,7 +138,7 @@ export function calculateReward(bot) {
                 fire.position.y <= aitank2.position.y + aitank2.height) ||
               (fire.axis === "-Y" && fire.position.y >= aitank2.position.y)
             ) {
-              reward = 1;
+              reward = bot.game.ai.REWARDS.HIT_TANK;
               //return reward;
             }
 
@@ -129,7 +152,7 @@ export function calculateReward(bot) {
                 fire.position.x <= aitank2.position.x + aitank2.width) ||
               (fire.axis === "-X" && fire.position.x >= aitank2.position.x)
             ) {
-              reward = 1;
+              reward = bot.game.ai.REWARDS.HIT_TANK;
               //return reward;
             }
       }

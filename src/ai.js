@@ -11,11 +11,20 @@ export default class AI {
     this.game = game;
     this.steps = [];
     this.action = null;
-    this.actions = ["U", "D", "L", "R", "1", "-", "^", ">", "v", "<"];
+    this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
     //this.actions = ["^", ">", "v", "<"];
     this.learningRate = 0.8;
-    this.discount = 0.6;
+    this.discount = 0.9;
     this.reward = null;
+    this.REWARDS = {
+      SURVIVED: 0,
+      HIT_TANK: 2,
+      BULLET_WASTED: -0.5,
+      CLOSER: 0.75,
+      FARTHER: -0.5,
+      DRIVE_INTO_WALL: -0.5,
+      GET_HIT: -1
+    };
     this.newState = null;
   }
 

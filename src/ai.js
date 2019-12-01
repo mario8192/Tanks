@@ -107,7 +107,7 @@ export default class AI {
     this.clear();
 
     this.tanks.push(new AITank(this.game, 385, 30));
-    this.tanks.push(new AITank(this.game, 100, 400));
+    // this.tanks.push(new AITank(this.game, 100, 400));
     // this.tanks.push(new AITank(this.game, 200, 40));
     // this.tanks.push(new AITank(this.game, 150, 400));
     // this.tanks.push(new AITank(this.game, 500, 550));

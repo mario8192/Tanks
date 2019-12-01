@@ -35,6 +35,11 @@ export default class AITank {
     //state vars
     this.action = null;
     this.reward = null;
+
+    this.xOffsetFromTank = Math.abs(game.tank.position.x - x);
+    this.yOffsetFromTank = Math.abs(game.tank.position.y - y);
+    this.oldxOffset = null;
+    this.oldyOffset = null;
   }
 
   moveLeft() {
@@ -153,6 +158,15 @@ export default class AITank {
         this.game.collision.check();
         count -= 1;
       }
+
+      this.oldxOffset = this.xOffsetFromTank;
+      this.oldyOffset = this.yOffsetFromTank;
+      this.xOffsetFromTank = Math.abs(
+        this.game.tank.position.x - this.position.x
+      );
+      this.yOffsetFromTank = Math.abs(
+        this.game.tank.position.y - this.position.y
+      );
     }
   }
 

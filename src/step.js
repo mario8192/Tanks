@@ -47,7 +47,7 @@ export function step(bot, action) {
 
     bot.reward = calculateReward(bot);
     let array = bot.game.currentState();
-    console.log(bot.reward, array);
+    //console.log(bot.reward, array);
 
     //custom console
     updateConsole(bot, array);

@@ -1,15 +1,27 @@
 {
-  "name": "brick-breaker-html5-game",
+  "name": "tanks",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.html",
+  "description": "Tanks",
+  "main": "app.js",
   "scripts": {
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "parcel-bundler": "^1.6.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mario8192/Tanks.git"
   },
-  "keywords": []
+  "author": "Mario D'sa , Shaikh Khalid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mario8192/Tanks/issues"
+  },
+  "homepage": "https://github.com/mario8192/Tanks#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.1",
+    "path": "^0.12.7"
+  }
 }

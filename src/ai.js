@@ -101,6 +101,14 @@ export default class AI {
 
       this.qTable[tank][bot][this.action] = newQ;
     }
+
+    else{
+      this.saveQtable()
+    }
+  }
+
+  saveQtable()  {
+    $.post('/', { "qtable": this.qTable });
   }
 
   randomAction(tank) {

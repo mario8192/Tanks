@@ -33,14 +33,13 @@ export default class Game {
     this.blockSize = 40;
 
     this.trainingMode = 1;
+    this.elapsedTime = 0;
+    this.timeInterval = 100;
 
     this.terrain = new Terrain(this);
     this.terrain.buildWalls();
-
     this.tank = new Tank(this);
-
     this.ai = new AI(this);
-
     this.collision = new Collision(this);
 
     new InputHandler(this.tank, this);
@@ -74,7 +73,7 @@ export default class Game {
     this.gamestate = GAMESTATE.RUNNING;
 
     this.ai.fillQtable();
-    this.ai.initializeAI(400);
+    this.ai.initializeAI(1);
 
     //this.ai.buildSteps();
     //this.execAIroutine(250);

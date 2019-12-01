@@ -11,7 +11,7 @@ export default class AI {
     this.game = game;
     this.steps = [];
     this.action = null;
-    this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
+    this.actions = ["U", "D", "L", "R", "1", "-", "^", ">", "v", "<"];
     //this.actions = ["^", ">", "v", "<"];
     this.learningRate = 0.8;
     this.discount = 0.6;

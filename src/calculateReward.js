@@ -28,6 +28,11 @@ export function calculateReward(bot) {
     //return reward;
   }
 
+  // aitank drive into wall --> reward = -1
+  if (bot.noUpdate) {
+    reward = -1;
+  }
+
   //fire + aitank  -->  reward = -1
   bot.game.tank.fires.forEach(fire => {
     //console.log(fire.position, bot.position);

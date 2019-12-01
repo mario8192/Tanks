@@ -6,44 +6,48 @@ export function step(bot, action) {
   if (action === "pause") {
     return;
   } else {
-    if (action === "U") {
-      bot.moveUp();
+    if (bot.game.elapsedTime > bot.game.timeInterval) {
+      if (action === "U") {
+        bot.moveUp();
+      }
+      if (action === "D") {
+        bot.moveDown();
+      }
+      if (action === "L") {
+        bot.moveLeft();
+      }
+      if (action === "R") {
+        bot.moveRight();
+      }
+      if (action === "1") {
+        bot.shoot();
+      }
+      if (action === "-") {
+        bot.stop();
+      }
+      if (action === "^") {
+        bot.moveUp();
+        bot.stop();
+        bot.shoot();
+      }
+      if (action === ">") {
+        bot.moveRight();
+        bot.stop();
+        bot.shoot();
+      }
+      if (action === "v") {
+        bot.moveDown();
+        bot.stop();
+        bot.shoot();
+      }
+      if (action === "<") {
+        bot.moveLeft();
+        bot.stop();
+        bot.shoot();
+      }
+      bot.game.elapsedTime = 0;
     }
-    if (action === "D") {
-      bot.moveDown();
-    }
-    if (action === "L") {
-      bot.moveLeft();
-    }
-    if (action === "R") {
-      bot.moveRight();
-    }
-    if (action === "1") {
-      bot.shoot();
-    }
-    if (action === "-") {
-      bot.stop();
-    }
-    if (action === "^") {
-      bot.moveUp();
-      bot.stop();
-      bot.shoot();
-    }
-    if (action === ">") {
-      bot.moveRight();
-      bot.stop();
-      bot.shoot();
-    }
-    if (action === "v") {
-      bot.moveDown();
-      bot.stop();
-      bot.shoot();
-    }
-    if (action === "<") {
-      bot.moveLeft();
-      bot.stop();
-      bot.shoot();
-    }
+    bot.game.elapsedTime += 1;
 
     bot.reward = calculateReward(bot);
     let array = bot.game.currentState();

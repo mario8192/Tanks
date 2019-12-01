@@ -22,8 +22,9 @@ export default class AI {
       BULLET_WASTED: -0.5,
       CLOSER: 0.75,
       FARTHER: -0.5,
-      DRIVE_INTO_WALL: -0.5,
-      GET_HIT: -1
+      DRIVE_INTO_WALL: -1,
+      GET_HIT: -1,
+      IDLE: -1
     };
     this.newState = null;
   }

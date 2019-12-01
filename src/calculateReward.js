@@ -41,6 +41,15 @@ export function calculateReward(bot) {
     reward = bot.game.ai.REWARDS.DRIVE_INTO_WALL;
   }
 
+  // don't stop muthafucka
+  if (bot.velX === 0 && bot.velY === 0) {
+    if (bot.waitTime > 300) {
+      bot.waitTime = 0;
+      reward = bot.game.ai.REWARDS.IDLE;
+    }
+    bot.waitTime += 1;
+  }
+
   //fire + aitank  -->  reward = -1
   bot.game.tank.fires.forEach(fire => {
     //console.log(fire.position, bot.position);
@@ -110,7 +119,8 @@ export function calculateReward(bot) {
 
     console.log(
       [fire.position.x, fire.position.y],
-      [bot.game.gameWidth, bot.game.gameHeight]
+      [bot.game.gameWidth, bot.game.gameHeight],
+      bot.game.blockSize
     );
 
     //stop wasting bullets

@@ -41,6 +41,7 @@ export default class AITank {
     this.yOffsetFromTank = Math.abs(y - game.tank.position.y);
     this.oldxOffset = null;
     this.oldyOffset = null;
+    this.waitTime = 0;
   }
 
   moveLeft() {

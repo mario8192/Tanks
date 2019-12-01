@@ -90,10 +90,15 @@ export default class Game {
   }
 
   setFireLimit(limit) {
-    let t = this;
+    let game = this;
     setInterval(function() {
-      if (t.tank.fireReady === 0) t.tank.fireReady = 1;
+      if (game.tank.fireReady === 0) game.tank.fireReady = 1;
     }, limit);
+    this.ai.tanks.forEach(tank => {
+      setInterval(function() {
+        if (tank.fireReady === 0) tank.fireReady = 1;
+      }, limit);
+    });
   }
 
   // needs reworking               *no more

@@ -1,4 +1,5 @@
 import Fire from "./fire.js";
+import { calculateReward } from "./calculateReward.js";
 
 export default class AITank {
   constructor(game, x, y) {
@@ -25,6 +26,7 @@ export default class AITank {
 
     this.terrain = game.terrain;
     this.fires = [];
+    this.fireReady = 1;
     this.noUpdate = 0;
     this.index = game.ai.tanks.indexOf(this);
 
@@ -66,7 +68,8 @@ export default class AITank {
   }
 
   shoot() {
-    this.fires.push(new Fire(this));
+    if (this.fireReady) this.fires.push(new Fire(this));
+    this.fireReady = 0;
   }
 
   stop() {
@@ -154,6 +157,7 @@ export default class AITank {
   }
 
   update(deltaTime) {
+    //if (!this.reward) this.reward = calculateReward(this);
     //tank + boundary
     if (this.position.x < 0) this.position.x = 0;
     if (this.position.y < 0) this.position.y = 0;

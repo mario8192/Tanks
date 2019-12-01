@@ -172,6 +172,7 @@ export default class Collision {
               //console.log("wall hit");
               fire.lifeEnd();
               wall.reduce(fire.axis);
+              //aitank.reward = 1;
             }
           });
         });

@@ -1,6 +1,7 @@
 import AITank from "./aitank.js";
 import { step, setSteps, callStepFunction } from "./step.js";
 import { initConsole } from "./customConsole.js";
+import { calculateReward } from "./calculateReward.js";
 
 export default class AI {
   constructor(game) {
@@ -9,7 +10,8 @@ export default class AI {
     this.game = game;
     this.steps = [];
     this.action = null;
-    this.actions = ["U", "D", "L", "R", "1"];
+    this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
+    //this.actions = ["^", ">", "v", "<"];
     this.learningRate = 0.8;
     this.discount = 0.6;
     this.reward = null;
@@ -66,15 +68,20 @@ export default class AI {
     //console.log(tank, bot, arr1, arr2);
 
     let qArray = this.qTable[tank][bot];
+    //console.log(qArray);
+
     let qValue = Math.max(...qArray);
     return [qValue, qArray.indexOf(qValue)];
   }
 
   qlogic(aitank) {
     if (this.game.gamestate === 1) {
+      //aitank.reward = calculateReward(aitank);
+
       let currState = this.game.currentState();
       let currQ = this.getQ(currState);
       this.action = currQ[1];
+      //console.log(this.action);
 
       let somedata = step(this.tanks[aitank.index], this.actions[this.action]); ///only for FIRST TANK
 
@@ -83,13 +90,15 @@ export default class AI {
       let maxNextQ = this.getQ(this.newState);
       let newQ =
         (1 - this.learningRate) * currQ[0] +
-        this.learningRate * (this.reward + this.discount * maxNextQ);
+        this.learningRate * (this.reward + this.discount * maxNextQ[0]);
       let arr1 = this.positionToIndex(currState[0]);
       let arr2 = this.positionToIndex(currState[aitank.index + 1]);
       let tank =
         (arr1[1] * this.game.gameWidth) / this.game.blockSize + arr1[0];
       let bot =
         (arr2[1] * this.game.gameHeight) / this.game.blockSize + arr2[0];
+
+      //console.log(newQ, this.reward, currQ, maxNextQ);
 
       this.qTable[tank][bot][this.action] = newQ;
     }
@@ -106,7 +115,7 @@ export default class AI {
   buildOpponents() {
     this.clear();
 
-    this.tanks.push(new AITank(this.game, 385, 30));
+    this.tanks.push(new AITank(this.game, 400, 200));
     // this.tanks.push(new AITank(this.game, 100, 400));
     // this.tanks.push(new AITank(this.game, 200, 40));
     // this.tanks.push(new AITank(this.game, 150, 400));

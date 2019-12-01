@@ -37,7 +37,7 @@ export default class Fire {
       if (this.axis === "-Y") this.position.y -= 1;
 
       this.game.ai.tanks.forEach(bot => {
-        calculateReward(bot);
+        //if (bot.reward === 0) bot.reward = calculateReward(bot);
       });
       count -= 1;
     }

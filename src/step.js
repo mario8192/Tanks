@@ -24,6 +24,26 @@ export function step(bot, action) {
     if (action === "-") {
       bot.stop();
     }
+    if (action === "^") {
+      bot.moveUp();
+      bot.stop();
+      bot.shoot();
+    }
+    if (action === ">") {
+      bot.moveRight();
+      bot.stop();
+      bot.shoot();
+    }
+    if (action === "v") {
+      bot.moveDown();
+      bot.stop();
+      bot.shoot();
+    }
+    if (action === "<") {
+      bot.moveLeft();
+      bot.stop();
+      bot.shoot();
+    }
 
     bot.reward = calculateReward(bot);
     let array = bot.game.currentState();

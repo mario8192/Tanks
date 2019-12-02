@@ -47,6 +47,9 @@ export default class InputHandler {
         case 46:
           if (game.trainingMode) game.terrain.clear();
           break;
+        case 35:
+          if (game.trainingMode) game.endGame();
+          break;
       }
     });
     document.addEventListener("keyup", event => {

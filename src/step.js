@@ -45,7 +45,7 @@ export function step(bot, action) {
       bot.stop();
       bot.shoot();
     }
-    bot.game.elapsedTime = 0;
+    //bot.game.elapsedTime = 0;
     // }
     // bot.game.elapsedTime += 1;
 

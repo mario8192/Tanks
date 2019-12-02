@@ -4,6 +4,12 @@ import { initConsole } from "./customConsole.js";
 import { calculateReward } from "./calculateReward.js";
 import { positionToIndex } from "./positionToIndex.js";
 
+var methods = {
+  loadQtableFromJSON: function(jason) {
+    console.log("yoo-hooo");
+  }
+};
+
 export default class AI {
   constructor(game) {
     this.qTable = [];
@@ -27,6 +33,7 @@ export default class AI {
       IDLE: -1
     };
     this.newState = null;
+    this.qTableSaved = 0;
   }
 
   initializeAI(adt) {
@@ -101,14 +108,22 @@ export default class AI {
 
       this.qTable[tank][bot][this.action] = newQ;
     }
-
-    else{
-      this.saveQtable()
+    if (this.game.gamestate === 3 && !this.qTableSaved) {
+      this.saveQtable();
+      this.qTableSaved = 1;
     }
   }
 
-  saveQtable()  {
-    $.post('/', { "qtable": this.qTable });
+  saveQtable() {
+    $.post("/", { qtable: JSON.stringify(this.qTable) });
+
+    // const qtableJSON = require("./qtable.json");
+    // let data = { qtable: JSON.stringify(this.qTable) };
+    // try {
+    //   qtableJSON.writeFileSync("./qtable.json", JSON.stringify(data));
+    // } catch (err) {
+    //   console.error(err);
+    // }
   }
 
   randomAction(tank) {
@@ -179,3 +194,5 @@ export default class AI {
     this.tanks.forEach(tank => tank.update(ctx));
   }
 }
+
+module.exports = methods;

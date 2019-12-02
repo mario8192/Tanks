@@ -232,4 +232,9 @@ export default class Game {
       this.gamestate = GAMESTATE.PAUSED;
     }
   }
+  endGame() {
+    if (this.gamestate == GAMESTATE.RUNNING) {
+      this.gamestate = GAMESTATE.GAMEOVER;
+    }
+  }
 }

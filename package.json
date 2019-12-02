@@ -7,6 +7,11 @@
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "src/qtable.json"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mario8192/Tanks.git"

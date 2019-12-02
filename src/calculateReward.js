@@ -42,7 +42,10 @@ export function calculateReward(bot) {
   }
 
   // don't stop muthafucka
-  if (bot.velX === 0 && bot.velY === 0) {
+  if (
+    bot.oldxOffset === bot.xOffsetFromTank &&
+    bot.oldyOffset === bot.yOffsetFromTank
+  ) {
     if (bot.waitTime > 300) {
       bot.waitTime = 0;
       reward = bot.game.ai.REWARDS.IDLE;
@@ -116,19 +119,27 @@ export function calculateReward(bot) {
           reward = bot.game.ai.REWARDS.HIT_TANK;
           //return reward;
         }
+  });
 
+  //stop wasting bullets
+  bot.fires.forEach(fire => {
     console.log(
       [fire.position.x, fire.position.y],
       [bot.game.gameWidth, bot.game.gameHeight],
       bot.game.blockSize
     );
+    console.log([
+      fire.position.x + fire.vel > bot.game.gameWidth - bot.game.blockSize,
+      fire.position.x - fire.vel < bot.game.blockSize,
+      fire.position.y + fire.vel > bot.game.gameHeight - bot.game.blockSize,
+      fire.position.y - fire.vel < bot.game.blockSize
+    ]);
 
-    //stop wasting bullets
     if (
-      fire.position.x > bot.game.gameWidth - bot.game.blockSize ||
-      fire.position.x < bot.game.blockSize ||
-      fire.position.y > bot.game.gameHeight - bot.game.blockSize ||
-      fire.position.y < bot.game.blockSize
+      fire.position.x + fire.vel > bot.game.gameWidth - bot.game.blockSize ||
+      fire.position.x - fire.vel < bot.game.blockSize ||
+      fire.position.y + fire.vel > bot.game.gameHeight - bot.game.blockSize ||
+      fire.position.y - fire.vel < bot.game.blockSize
     ) {
       reward = bot.game.ai.REWARDS.BULLET_WASTED;
     }

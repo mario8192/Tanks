@@ -123,17 +123,17 @@ export function calculateReward(bot) {
 
   //stop wasting bullets
   bot.fires.forEach(fire => {
-    console.log(
-      [fire.position.x, fire.position.y],
-      [bot.game.gameWidth, bot.game.gameHeight],
-      bot.game.blockSize
-    );
-    console.log([
-      fire.position.x + fire.vel > bot.game.gameWidth - bot.game.blockSize,
-      fire.position.x - fire.vel < bot.game.blockSize,
-      fire.position.y + fire.vel > bot.game.gameHeight - bot.game.blockSize,
-      fire.position.y - fire.vel < bot.game.blockSize
-    ]);
+    // console.log(
+    //   [fire.position.x, fire.position.y],
+    //   [bot.game.gameWidth, bot.game.gameHeight],
+    //   bot.game.blockSize
+    // );
+    // console.log([
+    //   fire.position.x + fire.vel > bot.game.gameWidth - bot.game.blockSize,
+    //   fire.position.x - fire.vel < bot.game.blockSize,
+    //   fire.position.y + fire.vel > bot.game.gameHeight - bot.game.blockSize,
+    //   fire.position.y - fire.vel < bot.game.blockSize
+    // ]);
 
     if (
       fire.position.x + fire.vel > bot.game.gameWidth - bot.game.blockSize ||

@@ -195,4 +195,4 @@ export default class AI {
   }
 }
 
-module.exports = methods;
+//module.exports = methods;

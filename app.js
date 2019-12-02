@@ -34,8 +34,8 @@ fs.readFile("./src/qtable.json", "utf8", (err, jsonString) => {
     jason = JSON.parse(jsonString);
     //console.log(jason);
     app.get("/", function(req, res) {
-      //res.render("index", { jason: jason });
-      ai.loadQtableFromJSON(jason); // doesn't work right now
+      res.render("index", { jason: jason });
+      //ai.loadQtableFromJSON(jason); // doesn't work right now
     });
     console.error("load success");
   } catch (err) {

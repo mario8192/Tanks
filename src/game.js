@@ -2,6 +2,7 @@ import InputHandler from "./input.js";
 import Tank from "./tank.js";
 import Terrain from "./terrain.js";
 import AI from "./ai.js";
+import DQN from "./dqn.js";
 import Collision from "./collision.js";
 import { state } from "./state.js";
 
@@ -40,6 +41,7 @@ export default class Game {
     this.terrain.buildWalls();
     this.tank = new Tank(this);
     this.ai = new AI(this);
+    //this.DQN = new DQN(this)
     this.collision = new Collision(this);
 
     new InputHandler(this.tank, this);

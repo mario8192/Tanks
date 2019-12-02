@@ -4,6 +4,7 @@ import { initConsole } from "./customConsole.js";
 import { calculateReward } from "./calculateReward.js";
 import { positionToIndex } from "./positionToIndex.js";
 
+
 var methods = {
   loadQtableFromJSON: function(jason) {
     console.log("yoo-hooo");
@@ -20,7 +21,7 @@ export default class AI {
     this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
     //this.actions = ["^", ">", "v", "<"];
     this.learningRate = 0.8;
-    this.discount = 0.9;
+    this.discount = 0.5;
     this.reward = null;
     this.REWARDS = {
       SURVIVED: 0,
@@ -29,7 +30,7 @@ export default class AI {
       CLOSER: 0.75,
       FARTHER: -0.5,
       DRIVE_INTO_WALL: -1,
-      GET_HIT: -1,
+      GET_HIT: -1,// fair?
       IDLE: -1
     };
     this.newState = null;
@@ -37,6 +38,7 @@ export default class AI {
   }
 
   initializeAI(adt) {
+    
     this.tanks.forEach(tank => {
       setInterval(() => {
         //this.randomAction(tank);
@@ -80,6 +82,7 @@ export default class AI {
     return [qValue, qArray.indexOf(qValue)];
   }
 
+  //almost useless
   qlogic(aitank) {
     if (this.game.gamestate === 1) {
       //aitank.reward = calculateReward(aitank);
@@ -108,15 +111,12 @@ export default class AI {
 
       this.qTable[tank][bot][this.action] = newQ;
     }
-<<<<<<< Updated upstream
     if (this.game.gamestate === 3 && !this.qTableSaved) {
       this.saveQtable();
       this.qTableSaved = 1;
-=======
-
+    }
     else{
       console.log(document.querySelector("p").innerHTML)
->>>>>>> Stashed changes
     }
   }
 

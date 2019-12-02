@@ -108,9 +108,15 @@ export default class AI {
 
       this.qTable[tank][bot][this.action] = newQ;
     }
+<<<<<<< Updated upstream
     if (this.game.gamestate === 3 && !this.qTableSaved) {
       this.saveQtable();
       this.qTableSaved = 1;
+=======
+
+    else{
+      console.log(document.querySelector("p").innerHTML)
+>>>>>>> Stashed changes
     }
   }
 

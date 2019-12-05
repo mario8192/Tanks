@@ -1,5 +1,17 @@
 export default class InputHandler {
   constructor(tank, game) {
+    document.getElementById("ri").addEventListener("click", ()=>  {
+      let rele =  document.getElementById("randomness")
+      if(parseFloat(rele.innerHTML)<1)
+      rele.innerHTML = parseFloat(rele.innerHTML) + 0.1;
+    });
+
+    document.getElementById("rd").addEventListener("click", ()=>  {
+      let rele =  document.getElementById("randomness")
+      if(parseFloat(rele.innerHTML)>0)
+      rele.innerHTML = parseFloat(rele.innerHTML) - 0.1;
+    });
+
     document.addEventListener("keydown", event => {
       //alert(event.keyCode);
       switch (event.keyCode) {

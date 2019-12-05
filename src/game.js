@@ -5,6 +5,7 @@ import AI from "./ai.js";
 //import DQN from "./dqn.js";
 import Collision from "./collision.js";
 import { state } from "./state.js";
+import { drawGrid } from "./drawgrid.js"
 
 const GAMESTATE = {
   PAUSED: 0,
@@ -73,7 +74,7 @@ export default class Game {
     this.ai.buildOpponents();
     this.setFireLimit(200);
     this.gamestate = GAMESTATE.RUNNING;
-
+    drawGrid(this.gameWidth, this.gameHeight);
     //this.ai.fillQtable();
     //this.ai.loadQtable();
     this.ai.loadQtable().then(this.ai.initializeAI(200));

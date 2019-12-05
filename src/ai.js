@@ -14,10 +14,11 @@ export default class AI {
     this.action = null;
     this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
     //this.actions = ["^", ">", "v", "<"];
-    this.learningRate = 0.8;
-    this.discount = 0.5;
+    this.learningRate = 0.9;
+    this.discount = 0.6;
+    this.rthreshold = parseFloat(document.getElementById("randomness").innerHTML)
     this.reward = null;
-    this.REWARDS = {
+    this.REWARDS = { //zyada overthink mat kar apne aap train hota hai wo minimal rakh rewarding ye bhot ajeeb hai
       SURVIVED: 0,
       HIT_TANK: 2,
       BULLET_WASTED: -0.5,
@@ -34,10 +35,20 @@ export default class AI {
   initializeAI(adt) {
     this.tanks.forEach(tank => {
       setInterval(() => {
-        //this.randomAction(tank);
-        this.qlogic(tank);
+        this.changeRandomness(tank)
       }, adt);
     }); 
+  }
+
+  changeRandomness(tank) {
+    let rnum = Math.random();
+    this.rthreshold = parseFloat(document.getElementById("randomness").innerHTML)
+    if (rnum < this.rthreshold)  {
+      this.randomAction(tank)
+    }
+    else {
+      this.qlogic(tank)
+    }
   }
 
   fillQtable() {
@@ -103,7 +114,7 @@ export default class AI {
 
       this.qTable[tank][bot][this.action] = newQ;
     }
-    if (this.game.gamestate === 3 && !this.qTableSaved) {
+    if (this.game.gamestate === 0 && !this.qTableSaved) {////////changed to pause .......going add a button
       this.saveQtable();
       this.qTableSaved = 1;
     }
@@ -112,6 +123,7 @@ export default class AI {
   saveQtable() {
     
     $.post("/", { qtable: JSON.stringify(this.qTable) });
+    console.log("---------saved qvalues------------");
     // const qtableJSON = require("./qtable.json");
     // let data = { qtable: JSON.stringify(this.qTable) };
     // try {
@@ -124,7 +136,7 @@ export default class AI {
   loadQtable()  {
     return new Promise((resolve, reject) =>  {
       this.qTable = JSON.parse(document.getElementById("qt").innerHTML);
-      console.log("---------saved updated qvalues------------");
+      console.log("---------loaded qvalues------------");
     });
     //document.querySelector("p").innerHTML = ""
   }

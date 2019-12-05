@@ -2,7 +2,7 @@ import InputHandler from "./input.js";
 import Tank from "./tank.js";
 import Terrain from "./terrain.js";
 import AI from "./ai.js";
-import DQN from "./dqn.js";
+//import DQN from "./dqn.js";
 import Collision from "./collision.js";
 import { state } from "./state.js";
 
@@ -74,8 +74,9 @@ export default class Game {
     this.setFireLimit(200);
     this.gamestate = GAMESTATE.RUNNING;
 
-    this.ai.fillQtable();
-    this.ai.initializeAI(200);
+    //this.ai.fillQtable();
+    //this.ai.loadQtable();
+    this.ai.loadQtable().then(this.ai.initializeAI(200));
 
     //this.ai.buildSteps();
     //this.execAIroutine(250);

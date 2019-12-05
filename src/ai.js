@@ -5,15 +5,9 @@ import { calculateReward } from "./calculateReward.js";
 import { positionToIndex } from "./positionToIndex.js";
 
 
-var methods = {
-  loadQtableFromJSON: function(jason) {
-    console.log("yoo-hooo");
-  }
-};
-
 export default class AI {
   constructor(game) {
-    this.qTable = [];
+    this.qTable = null;
     this.tanks = [];
     this.game = game;
     this.steps = [];
@@ -38,13 +32,12 @@ export default class AI {
   }
 
   initializeAI(adt) {
-    
     this.tanks.forEach(tank => {
       setInterval(() => {
         //this.randomAction(tank);
         this.qlogic(tank);
       }, adt);
-    });
+    }); 
   }
 
   fillQtable() {
@@ -76,7 +69,6 @@ export default class AI {
     //console.log(tank, bot, arr1, arr2);
 
     let qArray = this.qTable[tank][bot];
-    //console.log(qArray);
 
     let qValue = Math.max(...qArray);
     return [qValue, qArray.indexOf(qValue)];
@@ -115,14 +107,11 @@ export default class AI {
       this.saveQtable();
       this.qTableSaved = 1;
     }
-    else{
-      console.log(document.querySelector("p").innerHTML)
-    }
   }
 
   saveQtable() {
+    
     $.post("/", { qtable: JSON.stringify(this.qTable) });
-
     // const qtableJSON = require("./qtable.json");
     // let data = { qtable: JSON.stringify(this.qTable) };
     // try {
@@ -130,6 +119,14 @@ export default class AI {
     // } catch (err) {
     //   console.error(err);
     // }
+  }
+
+  loadQtable()  {
+    return new Promise((resolve, reject) =>  {
+      this.qTable = JSON.parse(document.getElementById("qt").innerHTML);
+      console.log("---------saved updated qvalues------------");
+    });
+    //document.querySelector("p").innerHTML = ""
   }
 
   randomAction(tank) {

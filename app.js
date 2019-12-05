@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const fs = require("fs");
-//const ai = require("./src/ai.js");
 
 const app = express();
 app.set("views", path.join(__dirname, "views"));
@@ -31,11 +30,12 @@ fs.readFile("./src/qtable.json", "utf8", (err, jsonString) => {
     return;
   }
   try {
-    jason = JSON.parse(jsonString);
+    //jason = JSON.parse(jsonString);
     //console.log(jason);
     app.get("/", function(req, res) {
-      res.render("index", { jason: jason });
-      //ai.loadQtableFromJSON(jason); // doesn't work right now
+      //console.log(jsonString)
+      res.render("index", { "jason": jsonString });
+      //ai.loadQtableFromJSON(jason); // front-end ke func ko backend se nai call kar sakta
     });
     console.error("load success");
   } catch (err) {

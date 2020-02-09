@@ -4,7 +4,6 @@ import { initConsole } from "./customConsole.js";
 import { calculateReward } from "./calculateReward.js";
 import { positionToIndex } from "./positionToIndex.js";
 
-
 export default class AI {
   constructor(game) {
     this.qTable = null;
@@ -12,20 +11,23 @@ export default class AI {
     this.game = game;
     this.steps = [];
     this.action = null;
-    this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
-    //this.actions = ["^", ">", "v", "<"];
+    // this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
+    this.actions = ["U", "D", "L", "R", "-"];
     this.learningRate = 0.9;
     this.discount = 0.6;
-    this.rthreshold = parseFloat(document.getElementById("randomness").innerHTML)
+    this.rthreshold = parseFloat(
+      document.getElementById("randomness").innerHTML
+    );
     this.reward = null;
-    this.REWARDS = { //zyada overthink mat kar apne aap train hota hai wo minimal rakh rewarding ye bhot ajeeb hai
+    this.REWARDS = {
+      //zyada overthink mat kar apne aap train hota hai wo minimal rakh rewarding ye bhot ajeeb hai
       SURVIVED: 0,
-      HIT_TANK: 2,
-      BULLET_WASTED: -0.5,
-      CLOSER: 0.75,
-      FARTHER: -0.5,
+      HIT_TANK: 1,
+      BULLET_WASTED: -1,
+      CLOSER: 1,
+      FARTHER: -1,
       DRIVE_INTO_WALL: -1,
-      GET_HIT: -1,// fair?
+      GET_HIT: -1, // fair?
       IDLE: -1
     };
     this.newState = null;
@@ -35,20 +37,29 @@ export default class AI {
   initializeAI(adt) {
     this.tanks.forEach(tank => {
       setInterval(() => {
-        this.changeRandomness(tank)
+        this.changeRandomness(tank);
       }, adt);
-    }); 
+    });
   }
 
   changeRandomness(tank) {
     let rnum = Math.random();
-    this.rthreshold = parseFloat(document.getElementById("randomness").innerHTML)
-    if (rnum < this.rthreshold)  {
-      this.randomAction(tank)
+    this.rthreshold = parseFloat(
+      document.getElementById("randomness").innerHTML
+    );
+    if (rnum < this.rthreshold) {
+      this.randomAction(tank);
+    } else {
+      this.qlogic(tank);
     }
-    else {
-      this.qlogic(tank)
-    }
+  }
+
+  enableShoot() {
+    this.actions = ["U", "D", "L", "R", "-", "^", ">", "v", "<"];
+  }
+
+  disableShoot() {
+    this.actions = ["U", "D", "L", "R", "-"];
   }
 
   fillQtable() {
@@ -114,14 +125,14 @@ export default class AI {
 
       this.qTable[tank][bot][this.action] = newQ;
     }
-    if (this.game.gamestate === 0 && !this.qTableSaved) {////////changed to pause .......going add a button
+    if (this.game.gamestate === 0 && !this.qTableSaved) {
+      ////////changed to pause .......going add a button
       this.saveQtable();
       this.qTableSaved = 1;
     }
   }
 
   saveQtable() {
-    
     $.post("/", { qtable: JSON.stringify(this.qTable) });
     console.log("---------saved qvalues------------");
     // const qtableJSON = require("./qtable.json");
@@ -133,8 +144,8 @@ export default class AI {
     // }
   }
 
-  loadQtable()  {
-    return new Promise((resolve, reject) =>  {
+  loadQtable() {
+    return new Promise((resolve, reject) => {
       this.qTable = JSON.parse(document.getElementById("qt").innerHTML);
       console.log("---------loaded qvalues------------");
     });

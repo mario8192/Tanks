@@ -1,19 +1,19 @@
 export default class InputHandler {
   constructor(tank, game) {
-    document.getElementById("ri").addEventListener("click", ()=>  {
-      let rele =  document.getElementById("randomness")
-      if(parseFloat(rele.innerHTML)<1)
-      rele.innerHTML = parseFloat(rele.innerHTML) + 0.1;
+    document.getElementById("ri").addEventListener("click", () => {
+      let rele = document.getElementById("randomness");
+      if (parseFloat(rele.innerHTML) < 1)
+        rele.innerHTML = parseFloat(rele.innerHTML) + 0.1;
     });
 
-    document.getElementById("rd").addEventListener("click", ()=>  {
-      let rele =  document.getElementById("randomness")
-      if(parseFloat(rele.innerHTML)>0)
-      rele.innerHTML = parseFloat(rele.innerHTML) - 0.1;
+    document.getElementById("rd").addEventListener("click", () => {
+      let rele = document.getElementById("randomness");
+      if (parseFloat(rele.innerHTML) > 0)
+        rele.innerHTML = parseFloat(rele.innerHTML) - 0.1;
     });
 
     document.addEventListener("keydown", event => {
-      //alert(event.keyCode);
+      // alert(event.keyCode);
       switch (event.keyCode) {
         case 65:
           if (game.gamestate === 0) return;
@@ -58,6 +58,12 @@ export default class InputHandler {
 
         case 46:
           if (game.trainingMode) game.terrain.clear();
+          break;
+        case 33:
+          if (game.trainingMode) game.ai.enableShoot();
+          break;
+        case 34:
+          if (game.trainingMode) game.ai.disableShoot();
           break;
         case 35:
           if (game.trainingMode) game.endGame();
